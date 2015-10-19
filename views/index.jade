@@ -4,17 +4,26 @@ block content
   div(class="demo")
 
     p
-      #user
         if(user)
-          div(class="user-card")
-            img(src="#{user.photoUrl}", alt="")
-            div(class="user-data")
-              span Имя: #{user.username}
-              br
-              span Профиль: <a href="#{user.profileUrl}">#{user.profileUrl}</a>
-              br
-              div(class="clear")
-          a(href="/sign-out", class="sign-out") Выйти ←
+          #user
+            div(class="user-card")
+              img(src="#{user.photoUrl}", alt="")
+              div(class="user-data")
+                span Имя: #{user.username}
+              div(class="user-data")
+                form(action="/sign-out" method="post")
+                  button(type="submit") Выйти
+                div(class="clear")
+
+          div(class="wrapper")
+            h2 Список устройств
+              div(class="deviceList")
+                  table
+                      thead
+                          th Id Устройства
+                          th Описание
+                      tbody
         else
           p Вы не авторизованы!
-          a(href="/auth") Авторизоваться →
+          form(action="/auth" method="get")
+            button(type="submit") Войти

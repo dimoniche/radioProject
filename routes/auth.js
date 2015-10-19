@@ -25,6 +25,12 @@ module.exports = function (app) {
         failureFlash: true })
     );
 
+    app.post('/sign-out', passport.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/sign-out',
+        failureFlash: true })
+    );
+
     app.get('/auth/fb',
         passport.authenticate('facebook', {
             scope: 'read_stream'

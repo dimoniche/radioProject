@@ -4,7 +4,7 @@ var AuthLocalStrategy = require('passport-local').Strategy;
 
 passport.use('local', new AuthLocalStrategy(
     function (username, password, done) {
-
+                
         if (username == "admin" && password == "admin") {
             return done(null, {
                 username: "admin",
