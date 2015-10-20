@@ -4,4 +4,9 @@ module.exports = function (app) {
             user: req.user
         });
     });
+    
+    app.get('/add-device', function (req, res) {
+
+        count_dev++;
+    });
 };

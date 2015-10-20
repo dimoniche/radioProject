@@ -2,7 +2,6 @@ extends layout
 
 block content
   div(class="demo")
-
     p
         if(user)
           #user
@@ -11,19 +10,40 @@ block content
               div(class="user-data")
                 span Имя: #{user.username}
               div(class="user-data")
-                form(action="/sign-out" method="post")
+                form(action="/sign-out" method="get")
                   button(type="submit") Выйти
                 div(class="clear")
 
-          div(class="wrapper")
-            h2 Список устройств
-              div(class="deviceList")
-                  table
-                      thead
-                          th Id Устройства
-                          th Описание
-                      tbody
+          if(user.username == "test")
+            //здесь будет добавление новых устройств 
+            p
+            form(action="/add-device" method="get")
+              button(type="submit") Добавить новое устройство
+            p
+            #deviceList
+                table
+                    thead
+                        th Id Устройства
+                        th Описание
+                        th Удалить
+                    tbody
+          else  
+            // это отображение текущих устройств 
+            #wrapper
+              h2 Список устройств
+                #deviceList
+                    table
+                        thead
+                            th Id Устройства
+                            th Описание
+                        tbody
         else
-          p Вы не авторизованы!
-          form(action="/auth" method="get")
-            button(type="submit") Войти
+          div(class="auth-form")
+            form(action="/auth" method="post")
+              div
+              input(type="text" name="username" class="input user" placeholder="логин")
+              div
+              input(type="password" name="password" class="input password" placeholder="пароль")
+              div(class="buttons")
+              span Логин и пароль <strong>admin</strong>&nbsp;
+              button(type="submit") Войти

@@ -9,7 +9,13 @@ passport.use('local', new AuthLocalStrategy(
             return done(null, {
                 username: "admin",
                 photoUrl: "https://pp.vk.me/c7003/v7003079/374b/53lwetwOxD8.jpg",
-                profileUrl: "http://vk.com/durov"
+            });
+        }
+
+        if (username == "test" && password == "test") {
+            return done(null, {
+                username: "test",
+                photoUrl: "http://cs621418.vk.me/v621418607/18bc6/8IW6NZaXKe8.jpg",
             });
         }
 

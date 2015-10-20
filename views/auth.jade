@@ -3,8 +3,6 @@ extends layout
 block content
   h1= title
   div(class="demo")
-    a(class="permalink", href=".") ← главная
-    h1 Авторизация
     div(class="auth-form")
       #error
         if(error.length>0)
