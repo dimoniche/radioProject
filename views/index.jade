@@ -19,14 +19,15 @@ block content
             p
             form(action="/add-device" method="get")
               button(type="submit") Добавить новое устройство
-            p
-            #deviceList
-                table
-                    thead
-                        th Id Устройства
-                        th Описание
-                        th Удалить
-                    tbody
+            #wrapper
+              p
+              #deviceList
+                  table
+                      thead
+                          th Id Устройства
+                          th Описание
+                          th Удалить
+                      tbody
           else  
             // это отображение текущих устройств 
             #wrapper
