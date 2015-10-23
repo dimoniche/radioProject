@@ -27,7 +27,7 @@ module.exports = function (app) {
 		// здесь добавление одного большого и одного маленького устройства
 
 		var answer = new Array();
-		answer[answer.length] = {'name': "small device", 'state': 'on'};	// маленькое устройство
+		answer[answer.length] = {'id': answer.length,'name': "small device", 'state': 'on'};	// маленькое устройство
 
 		// большое устройство
         var newDevice = {
@@ -62,7 +62,7 @@ module.exports = function (app) {
 			// узнаем что было
 			answer = doc.answer;
 			
-			answer[answer.length] = {'name': "small device", 'state': 'on'};	// добавим маленькое устройство
+			answer[answer.length] = {'id': answer.length,'name': "small device", 'state': 'on'};	// добавим маленькое устройство
 
 			collection.findAndModify(
 			{
@@ -74,12 +74,13 @@ module.exports = function (app) {
 			},
 			function(err,doc) {
 				if (err) throw err;
+				
+				res.send((err === null) ? { msg: '' } : { msg:'error: ' + err });
+				
 				console.log( doc );
 			});
 			
 		});
-		
-		//res.redirect('/');
     });
 
 	app.delete('/delete-device/:id', function(req, res) {
@@ -90,6 +91,45 @@ module.exports = function (app) {
 		
 		collection.remove({ '_id' : deviceToDelete }, function(err) {
 			res.send((err === null) ? { msg: '' } : { msg:'error: ' + err });
+		});
+	});
+	
+	app.delete('/delete-smalldevice/:id', function(req, res) {
+		
+		var db = req.db;
+		var collection = db.get('devices');
+		var deviceToDelete = req.params.id;
+		
+		var arr = deviceToDelete.split(">");
+		var answer;
+		
+		collection.findOne({ '_id': arr[0] }).on('success', function (doc) {
+			
+			answer = doc.answer;
+			
+			var val = parseInt(arr[1]);
+			
+			answer.splice(val,1);
+			
+			answer.forEach(function(item, i, arr) {
+  				item.id = i;
+			});
+
+			collection.findAndModify(
+			{
+				"query": { "_id": arr[0] },
+				"update": { "$set": { 
+					"answer": answer,
+				}},
+				"options": { "new": true, "upsert": true }
+			},
+			function(err,doc) {
+				if (err) throw err;
+				
+				res.send((err === null) ? { msg: '' } : { msg:'error: ' + err });
+				
+				console.log( doc );
+			});
 		});
 	});
 	

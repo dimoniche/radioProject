@@ -4,12 +4,9 @@ block content
  h1= title
   div(class="demo")
     a(class="permalink", href="/") ← назад
-    
-    span Имя: #{device.description}
     p
-    span Имя: #{device.answer}
 
-    h1 Список подключенных устройств к 
+    h1 Список подключенных устройств к #{device.description}
     
     if(user)
         if(user.username != "test")
@@ -21,8 +18,8 @@ block content
           #smalldeviceList
               table
                   thead
-                      th Id Устройства
-                      th Описание
+                      th Название
+                      th Состояние
                       th Удалить
                   tbody
         // else  

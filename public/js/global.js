@@ -10,20 +10,24 @@ $(document).ready(function() {
     
     // добавление маленького устройства
     $('#addsmalldevice').on('click', addsmalldevice);
+    // удаление устройства при редактировании
+    $('#smalldeviceList table tbody').on('click', 'td a.linkdeletesmalldevice', deletesmallDevice);
 });
 
 // функция добавления маленького устройства
 function addsmalldevice() {
     
-        var id = window.location.search;
+    var id = window.location.pathname;
+    
+    id = id.replace("/show-device/","");
 
-        $.ajax({
-            type: 'GET',
-            url: '/add-small-device/' + id
-        }).done(function( response ) {
-            // Update the table
-            //populateTable();
-        });
+    $.ajax({
+        type: 'GET',
+        url: '/add-small-device/' + id
+    }).done(function( response ) {
+        // Update the table
+        populateTable();
+    });
 }
 
 // Fill table with data
@@ -41,9 +45,9 @@ function populateTable() {
         $.each(data, function(){
     
             tableContent += '<tr>';
-            tableContent += '<td><a href="#" class="linkshowsmalldevice" rel="' + this._id + '">' + this.device + '</a></td>';
-            tableContent += '<td>' + this.description + '</td>';
-            tableContent += '<td><a href="#" class="linkdeletesmalldevice" rel="' + this._id + '">delete</a></td>';
+            tableContent += '<td><a href="#" class="linkshowsmalldevice" rel="' + this._id + '">' + this.name + '</a></td>';
+            tableContent += '<td>' + this.state + '</td>';
+            tableContent += '<td><a href="#" class="linkdeletesmalldevice" rel="' + id + '>' + this.id +'">delete</a></td>';
             tableContent += '</tr>';
         });
    
@@ -93,6 +97,38 @@ function showdevice() {
     //$(location).attr({'href': url, 'hash': hash});  
 };
 
+function deletesmallDevice() {
+    
+    //event.preventDefault();
+
+    // Pop up a confirmation dialog
+    var confirmation = confirm('Are you sure you want to delete this user?');
+
+    // Check and make sure the user confirmed
+    if (confirmation === true) {
+
+        // If they did, do our delete
+        $.ajax({
+            type: 'DELETE',
+            url: '/delete-smalldevice/' + $(this).attr('rel')
+        }).done(function( response ) {
+
+            // Check for a successful (blank) response
+            if (response.msg === '') {
+            }
+            else {
+                alert('Error: ' + response.msg);
+            }
+
+            // Update the table
+            populateTable();
+        });
+    }
+    else {
+        // If they said no to the confirm, do nothing
+        return false;
+    }
+}
 function deleteDevice() {
     
     //event.preventDefault();
