@@ -1,10 +1,11 @@
-    
+ 
 $(document).ready(function() {
      
 	populateTable();
     
     // Delete device link click
     $('#deviceList table tbody').on('click', 'td a.linkdeletedevice', deleteDevice);
+    $('#deviceList table tbody').on('click', 'td a.linkshowdevice', showdevice);
 });
 
 // Fill table with data
@@ -20,7 +21,7 @@ function populateTable() {
         $.each(data, function(){
     
             tableContent += '<tr>';
-            tableContent += '<td><a href="#" class="linkshowdevice" rel="' + this.device + '">' + this.device + '</a></td>';
+            tableContent += '<td><a href="#" class="linkshowdevice" rel="' + this._id + '">' + this.device + '</a></td>';
             tableContent += '<td>' + this.description + '</td>';
             tableContent += '<td><a href="#" class="linkdeletedevice" rel="' + this._id + '">delete</a></td>';
             tableContent += '</tr>';
@@ -29,7 +30,12 @@ function populateTable() {
         // Inject the whole content string into our existing HTML table
         $('#deviceList table tbody').html(tableContent);
     });
+};
 
+function showdevice() {
+  
+    var url = "/show-device/" + $(this).attr('rel');
+    $(location).attr('href',url);  
 };
 
 function deleteDevice() {
@@ -57,15 +63,11 @@ function deleteDevice() {
 
             // Update the table
             populateTable();
-
         });
-
     }
     else {
-
         // If they said no to the confirm, do nothing
         return false;
-
     }
-
 }
+

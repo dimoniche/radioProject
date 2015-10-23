@@ -1,19 +1,25 @@
 module.exports = function (app) {
+	
     app.get('/device', function (req, res) {
        	var db = req.db;
        	var collection = db.get('devices');
+
+		//var answer = {username: req.user.username , JSON: ''};
+
 		collection.find({},{},function(e,docs){
 			res.json(docs);
 		});
-
+		
+		//answer.JSON = res;
+		//res = answer;
     });
-	
+
 	app.get('/add-device', function (req, res) {
 
         var newDevice = {
             'device': "device",
             'description': "device_description",
-            'answer': " "
+            'answer': "{1:1}"
         }
 
 		var db = req.db;
@@ -37,5 +43,23 @@ module.exports = function (app) {
 		collection.remove({ '_id' : deviceToDelete }, function(err) {
 			res.send((err === null) ? { msg: '' } : { msg:'error: ' + err });
 		});
+	});
+	
+	app.get('/show-device/:id', function(req, res) {
+		
+		var db = req.db;
+		var collection = db.get('devices');
+		var deviceToShow = req.params.id;
+		var tmp;
+
+		collection.findById(deviceToShow, function(err, doc){
+			tmp = doc;
+		});
+
+        res.render('showdevice', {
+			device: deviceToShow,
+			answer: collection.answer,
+            error: req.flash('error')
+        });
 	});
 };

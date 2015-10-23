@@ -8,7 +8,7 @@ module.exports = function (app) {
             res.redirect('/');
             return;
         }
-
+        
         res.render('auth', {
             error: req.flash('error')
         });
