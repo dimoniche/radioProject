@@ -3,10 +3,28 @@ $(document).ready(function() {
      
 	populateTable();
     
-    // Delete device link click
-    $('#deviceList table tbody').on('click', 'td a.linkdeletedevice', deleteDevice);
-    $('#deviceList table tbody').on('click', 'td a.linkshowdevice', showdevice);
+    // удаление устройства при редактировании
+    $('#deviceListEdit table tbody').on('click', 'td a.linkdeletedevice', deleteDevice);
+    // отображение подключенных устройств при редактировании
+    $('#deviceListEdit table tbody').on('click', 'td a.linkshowdevice', showdevice);
+    
+    // добавление маленького устройства
+    $('#addsmalldevice').on('click', addsmalldevice);
 });
+
+// функция добавления маленького устройства
+function addsmalldevice() {
+    
+        var id = window.location.search;
+
+        $.ajax({
+            type: 'GET',
+            url: '/add-small-device/' + id
+        }).done(function( response ) {
+            // Update the table
+            //populateTable();
+        });
+}
 
 // Fill table with data
 function populateTable() {
@@ -14,10 +32,29 @@ function populateTable() {
     // Empty content string
     var tableContent = '';
 
-    // jQuery AJAX call for JSON
+    var id = window.location.pathname;
+    
+    id = id.replace("/show-device/","");
+
+    // выводим список маленьких устройств
+    $.getJSON( '/smalldevice/' + id, function( data ) {
+        $.each(data, function(){
+    
+            tableContent += '<tr>';
+            tableContent += '<td><a href="#" class="linkshowsmalldevice" rel="' + this._id + '">' + this.device + '</a></td>';
+            tableContent += '<td>' + this.description + '</td>';
+            tableContent += '<td><a href="#" class="linkdeletesmalldevice" rel="' + this._id + '">delete</a></td>';
+            tableContent += '</tr>';
+        });
+   
+        // 
+        $('#smalldeviceList table tbody').html(tableContent);
+    });
+
+    // выводим список больших устройств
     $.getJSON( '/device', function( data ) {
 
-        // For each item in our JSON, add a table row and cells to the content string
+        // Редактирование списка устройств
         $.each(data, function(){
     
             tableContent += '<tr>';
@@ -27,15 +64,33 @@ function populateTable() {
             tableContent += '</tr>';
         });
    
-        // Inject the whole content string into our existing HTML table
-        $('#deviceList table tbody').html(tableContent);
+        // 
+        $('#deviceListEdit table tbody').html(tableContent);
+        
+        tableContent = '';
+
+        // Просто отображение устройств
+        $.each(data, function(){
+    
+            tableContent += '<tr>';
+            tableContent += '<td><a href="#" class="linkshowdevice" rel="' + this._id + '">' + this.device + '</a></td>';
+            tableContent += '<td>' + this.description + '</td>';
+            tableContent += '</tr>';
+        });
+   
+        // 
+        $('#deviceListView table tbody').html(tableContent);
     });
 };
 
 function showdevice() {
   
-    var url = "/show-device/" + $(this).attr('rel');
-    $(location).attr('href',url);  
+    window.location = "/show-device/" +  $(this).attr('rel');
+
+    //var url = "/show-device";
+    //var hash = $(this).attr('rel');
+
+    //$(location).attr({'href': url, 'hash': hash});  
 };
 
 function deleteDevice() {

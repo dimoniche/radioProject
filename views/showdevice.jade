@@ -3,9 +3,37 @@ extends layout
 block content
  h1= title
   div(class="demo")
-    p test 
-    span Имя: #{device}
-    p
-    span Имя: #{answer}
+    a(class="permalink", href="/") ← назад
     
+    span Имя: #{device.description}
+    p
+    span Имя: #{device.answer}
+
+    h1 Список подключенных устройств к 
+    
+    if(user)
+        if(user.username != "test")
+        //здесь будет добавление новых устройств 
+        p
+          button#addsmalldevice Добавить новое устройство
+        #wrapper
+          p
+          #smalldeviceList
+              table
+                  thead
+                      th Id Устройства
+                      th Описание
+                      th Удалить
+                  tbody
+        // else  
+        //   // это отображение текущих устройств 
+        //   #wrapper
+        //     h2 Список устройств
+        //       #deviceList
+        //           table
+        //               thead
+        //                   th Id Устройства
+        //                   th Описание
+        //               tbody
+      
 

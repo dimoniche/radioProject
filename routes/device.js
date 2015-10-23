@@ -1,25 +1,39 @@
 module.exports = function (app) {
 	
+	// выводим набор больших устройств
     app.get('/device', function (req, res) {
        	var db = req.db;
        	var collection = db.get('devices');
 
-		//var answer = {username: req.user.username , JSON: ''};
-
 		collection.find({},{},function(e,docs){
 			res.json(docs);
 		});
-		
-		//answer.JSON = res;
-		//res = answer;
     });
 
+	// выводим набор маленьких устройств
+    app.get('/smalldevice/:id', function (req, res) {
+      	var db = req.db;
+       	var collection = db.get('devices');
+		var id = req.params.id;
+
+		collection.findOne({ '_id': id }).on('success', function (doc) {
+			res.json(doc.answer);
+		});
+    });
+
+	//  добавляем большой устройство к которому подключаются маленькие
 	app.get('/add-device', function (req, res) {
 
+		// здесь добавление одного большого и одного маленького устройства
+
+		var answer = new Array();
+		answer[answer.length] = {'name': "small device", 'state': 'on'};	// маленькое устройство
+
+		// большое устройство
         var newDevice = {
             'device': "device",
             'description': "device_description",
-            'answer': "{1:1}"
+            'answer': answer
         }
 
 		var db = req.db;
@@ -34,6 +48,40 @@ module.exports = function (app) {
 		res.redirect('/');
     });
 	
+	//	добавляем маленькое устройство к большому
+	app.get('/add-small-device/:id', function (req, res) {
+
+        var answer = [];
+		var id = req.params.id;
+		var db = req.db;
+		var collection = db.get('devices');
+
+		// сначала найдем то что есть
+		collection.findOne({ '_id': id }).on('success', function (doc) {
+		
+			// узнаем что было
+			answer = doc.answer;
+			
+			answer[answer.length] = {'name': "small device", 'state': 'on'};	// добавим маленькое устройство
+
+			collection.findAndModify(
+			{
+				"query": { "_id": id },
+				"update": { "$set": { 
+					"answer": answer,
+				}},
+				"options": { "new": true, "upsert": true }
+			},
+			function(err,doc) {
+				if (err) throw err;
+				console.log( doc );
+			});
+			
+		});
+		
+		//res.redirect('/');
+    });
+
 	app.delete('/delete-device/:id', function(req, res) {
 		
 		var db = req.db;
@@ -50,16 +98,17 @@ module.exports = function (app) {
 		var db = req.db;
 		var collection = db.get('devices');
 		var deviceToShow = req.params.id;
-		var tmp;
+		var currentuser = req.user;
 
-		collection.findById(deviceToShow, function(err, doc){
-			tmp = doc;
+		collection.findOne({ '_id': deviceToShow }).on('success', function (doc) {
+			
+			res.render('showdevice', {
+				user: currentuser,
+				device: doc,
+				error: req.flash('error')
+			});
+			
+			//res.redirect('/smalldevice/' + deviceToShow);
 		});
-
-        res.render('showdevice', {
-			device: deviceToShow,
-			answer: collection.answer,
-            error: req.flash('error')
-        });
 	});
 };
