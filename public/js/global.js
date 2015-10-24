@@ -3,17 +3,20 @@ $(document).ready(function() {
      
 	populateTable();
     
+    setInterval('populateTable()',3000);
+    
     // удаление устройства при редактировании
     $('#deviceListEdit table tbody').on('click', 'td a.linkdeletedevice', deleteDevice);
     // отображение подключенных устройств при редактировании
     $('#deviceListEdit table tbody').on('click', 'td a.linkshowdevice', showdevice);
+    $('#deviceListView table tbody').on('click', 'td a.linkshowdevice', showdevice);
     
     // добавление маленького устройства
     $('#addsmalldevice').on('click', addsmalldevice);
     // удаление устройства при редактировании
-    $('#smalldeviceList table tbody').on('click', 'td a.linkdeletesmalldevice', deletesmallDevice);
+    $('#smalldeviceListEdit table tbody').on('click', 'td a.linkdeletesmalldevice', deletesmallDevice);
 });
-
+    
 // функция добавления маленького устройства
 function addsmalldevice() {
     
@@ -50,10 +53,25 @@ function populateTable() {
             tableContent += '<td><a href="#" class="linkdeletesmalldevice" rel="' + id + '>' + this.id +'">delete</a></td>';
             tableContent += '</tr>';
         });
+        
+        // 
+        $('#smalldeviceListEdit table tbody').html(tableContent);
+        
+        tableContent = '';
+        
+        $.each(data, function(){
+    
+            tableContent += '<tr>';
+            tableContent += '<td><class="linkshowsmalldevice" rel="' + this._id + '">' + this.name + '</a></td>';
+            tableContent += '<td>' + this.state + '</td>';
+            tableContent += '</tr>';
+        });
    
         // 
-        $('#smalldeviceList table tbody').html(tableContent);
+        $('#smalldeviceListView table tbody').html(tableContent);
     });
+
+    tableContent = '';
 
     // выводим список больших устройств
     $.getJSON( '/device', function( data ) {

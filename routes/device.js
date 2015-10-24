@@ -147,8 +147,6 @@ module.exports = function (app) {
 				device: doc,
 				error: req.flash('error')
 			});
-			
-			//res.redirect('/smalldevice/' + deviceToShow);
 		});
 	});
 };
