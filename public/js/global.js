@@ -7,6 +7,8 @@ $(document).ready(function() {
     
     // удаление устройства при редактировании
     $('#deviceListEdit table tbody').on('click', 'td a.linkdeletedevice', deleteDevice);
+    $('#deviceListEdit table tbody').on('click', 'td a.linksavedesc', savedesc);
+
     // отображение подключенных устройств при редактировании
     $('#deviceListEdit table tbody').on('click', 'td a.linkshowdevice', showdevice);
     $('#deviceListView table tbody').on('click', 'td a.linkshowdevice', showdevice);
@@ -15,8 +17,41 @@ $(document).ready(function() {
     $('#addsmalldevice').on('click', addsmalldevice);
     // удаление устройства при редактировании
     $('#smalldeviceListEdit table tbody').on('click', 'td a.linkdeletesmalldevice', deletesmallDevice);
+    
+    // кнопка сохранения названия девайса
+    $('#saveDeviceName').on('click', renameDesc);
 });
     
+function renameDesc() {
+    
+    var namedesc = $('#renameDesc fieldset input#inputDeviceName').val();
+
+        $.ajax({
+            type: 'POST',
+            data: namedesc,
+            url: '/renameDesc/' + namedesc,//$(this).attr('rel'),
+            dataType: 'text'
+        }).done(function( response ) {
+
+            // Check for successful (blank) response
+            if (response.msg === '') {
+
+                // Clear the form inputs
+                //$('#addUser fieldset input').val('');
+
+                // Update the table
+                //populateTable();
+
+            }
+            else {
+
+                // If something goes wrong, alert the error message that our service returned
+                alert('Error: ' + response.msg);
+
+            }
+        });
+}
+
 // функция добавления маленького устройства
 function addsmalldevice() {
     
@@ -81,7 +116,7 @@ function populateTable() {
     
             tableContent += '<tr>';
             tableContent += '<td><a href="#" class="linkshowdevice" rel="' + this._id + '">' + this.device + '</a></td>';
-            tableContent += '<td>' + this.description + '</td>';
+            tableContent += '<td><a href="#" class="linksavedesc" rel="' + this._id + '">'+ this.description +'</a></td>';
             tableContent += '<td><a href="#" class="linkdeletedevice" rel="' + this._id + '">delete</a></td>';
             tableContent += '</tr>';
         });
@@ -104,6 +139,11 @@ function populateTable() {
         $('#deviceListView table tbody').html(tableContent);
     });
 };
+
+function savedesc()
+{
+    window.location = "/gosaveDesc/" +  $(this).attr('rel');
+}
 
 function showdevice() {
   

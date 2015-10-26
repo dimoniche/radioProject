@@ -1,0 +1,14 @@
+extends layout
+
+block content
+ h1= title
+  div(class="demo")
+    a(class="permalink", href="/") ← назад
+    p
+
+    h1 Редактирование названия устройства
+    
+    #renameDesc
+    fieldset
+      input#inputDeviceName(type='text', value=device.description)
+      button#saveDeviceName(rel=device._id) Сохранить

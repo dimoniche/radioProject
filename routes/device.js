@@ -149,4 +149,39 @@ module.exports = function (app) {
 			});
 		});
 	});
+	
+	app.get('/gosaveDesc/:id', function(req, res) {
+		
+		var db = req.db;
+		var collection = db.get('devices');
+		var deviceToShow = req.params.id;
+		var currentuser = req.user;
+
+		collection.findOne({ '_id': deviceToShow }).on('success', function (doc) {
+			
+			res.render('savedesc', {
+				user: currentuser,
+				device: doc,
+				error: req.flash('error')
+			});
+		});
+	});
+	
+	app.post('/renameDesc/:id', function(req, res) {
+		
+		var db = req.db;
+		var collection = db.get('devices');
+		var deviceToShow = req.params.id;
+		var currentuser = req.user;
+        var name = req.body;
+
+		collection.findOne({ '_id': deviceToShow }).on('success', function (doc) {
+
+			// res.render('savedesc', {
+			// 	user: currentuser,
+			// 	device: doc,
+			// 	error: req.flash('error')
+			// });
+		});
+	});
 };
