@@ -24,12 +24,12 @@ $(document).ready(function() {
     
 function renameDesc() {
     
-    var namedesc = $('#renameDesc fieldset input#inputDeviceName').val();
+    var namedesc = {name: $('#renameDesc fieldset input#inputDeviceName').val()};
 
         $.ajax({
             type: 'POST',
             data: namedesc,
-            url: '/renameDesc/' + namedesc,//$(this).attr('rel'),
+            url: '/renameDesc/' + $(this).attr('rel'),
             dataType: 'text'
         }).done(function( response ) {
 
@@ -117,6 +117,8 @@ function populateTable() {
             tableContent += '<tr>';
             tableContent += '<td><a href="#" class="linkshowdevice" rel="' + this._id + '">' + this.device + '</a></td>';
             tableContent += '<td><a href="#" class="linksavedesc" rel="' + this._id + '">'+ this.description +'</a></td>';
+            tableContent += '<td>' + this.lastAccessTime +'</td>';
+            tableContent += '<td> on </td>';
             tableContent += '<td><a href="#" class="linkdeletedevice" rel="' + this._id + '">delete</a></td>';
             tableContent += '</tr>';
         });
@@ -132,6 +134,8 @@ function populateTable() {
             tableContent += '<tr>';
             tableContent += '<td><a href="#" class="linkshowdevice" rel="' + this._id + '">' + this.device + '</a></td>';
             tableContent += '<td>' + this.description + '</td>';
+            tableContent += '<td>' + this.lastAccessTime +'</td>';
+            tableContent += '<td> on </td>';
             tableContent += '</tr>';
         });
    

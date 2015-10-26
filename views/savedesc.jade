@@ -5,10 +5,9 @@ block content
   div(class="demo")
     a(class="permalink", href="/") ← назад
     p
-
     h1 Редактирование названия устройства
-    
-    #renameDesc
-    fieldset
-      input#inputDeviceName(type='text', value=device.description)
-      button#saveDeviceName(rel=device._id) Сохранить
+    #wrapper
+      #renameDesc
+        fieldset
+          input#inputDeviceName(type='text', value=device.description)
+          button#saveDeviceName(rel=device._id) Сохранить

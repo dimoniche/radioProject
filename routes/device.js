@@ -31,8 +31,10 @@ module.exports = function (app) {
 
 		// большое устройство
         var newDevice = {
+			'deviceId': answer.length,
             'device': "device",
             'description': "device_description",
+			'lastAccessTime': new Date().toLocaleString("ru", { year: 'numeric', month: 'long' }),
             'answer': answer
         }
 
@@ -69,6 +71,7 @@ module.exports = function (app) {
 				"query": { "_id": id },
 				"update": { "$set": { 
 					"answer": answer,
+					'lastAccessTime': new Date().toLocaleString("ru", { year: 'numeric', month: 'long' }),
 				}},
 				"options": { "new": true, "upsert": true }
 			},
@@ -120,6 +123,7 @@ module.exports = function (app) {
 				"query": { "_id": arr[0] },
 				"update": { "$set": { 
 					"answer": answer,
+					'lastAccessTime': new Date().toLocaleString("ru", { year: 'numeric', month: 'long' }),
 				}},
 				"options": { "new": true, "upsert": true }
 			},
@@ -173,15 +177,21 @@ module.exports = function (app) {
 		var collection = db.get('devices');
 		var deviceToShow = req.params.id;
 		var currentuser = req.user;
-        var name = req.body;
+        var name = req.body.name;
 
-		collection.findOne({ '_id': deviceToShow }).on('success', function (doc) {
-
-			// res.render('savedesc', {
-			// 	user: currentuser,
-			// 	device: doc,
-			// 	error: req.flash('error')
-			// });
+		collection.findAndModify(
+		{
+			"query": { "_id": deviceToShow },
+			"update": { "$set": { 
+				"description": name,
+				'lastAccessTime': new Date().toLocaleString("ru", { year: 'numeric', month: 'long' }),
+			}},
+			"options": { "new": true, "upsert": true }
+		},
+		function(err,doc) {
+			if (err) throw err;
+			
+			console.log( doc );
 		});
 	});
 };
