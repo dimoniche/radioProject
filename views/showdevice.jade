@@ -1,38 +1,36 @@
 extends layout
 
 block content
- h1= title
   div(class="demo")
     a(class="permalink", href="/") ← назад
     p
-
     h1 Список подключенных устройств к #{device.description}
-    
-    if(user)
-      #user
-        if(user.username == "test")
-          //здесь будет добавление новых устройств 
-          p
-          button#addsmalldevice Добавить новое устройство
-          #wrapper
-          p
-          #smalldeviceListEdit
-              table
-                  thead
-                      th Название
-                      th Состояние
-                      th Удалить
-                  tbody
-         else  
-           // это отображение текущих устройств 
-           p
-           #wrapper
-           p
-           #smalldeviceListView
+    div(class="clear")
+      if(user)
+        #user
+          if(user.username == "test")
+            //здесь будет добавление новых устройств 
+            p
+            button#addsmalldevice Добавить новое устройство
+            #wrapper
+            p
+            #smalldeviceListEdit
                 table
                     thead
                         th Название
                         th Состояние
+                        th Удалить
                     tbody
+          else  
+            // это отображение текущих устройств 
+            p
+            #wrapper
+            p
+            #smalldeviceListView
+                  table
+                      thead
+                          th Название
+                          th Состояние
+                      tbody
       
 

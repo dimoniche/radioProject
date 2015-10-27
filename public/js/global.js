@@ -32,23 +32,7 @@ function renameDesc() {
             url: '/renameDesc/' + $(this).attr('rel'),
             dataType: 'text'
         }).done(function( response ) {
-
-            // Check for successful (blank) response
-            if (response.msg === '') {
-
-                // Clear the form inputs
-                //$('#addUser fieldset input').val('');
-
-                // Update the table
-                //populateTable();
-
-            }
-            else {
-
-                // If something goes wrong, alert the error message that our service returned
-                alert('Error: ' + response.msg);
-
-            }
+            window.location = "/";
         });
 }
 
@@ -76,72 +60,84 @@ function populateTable() {
 
     var id = window.location.pathname;
     
-    id = id.replace("/show-device/","");
-
-    // выводим список маленьких устройств
-    $.getJSON( '/smalldevice/' + id, function( data ) {
-        $.each(data, function(){
+    if(id.indexOf("show-device") >= 0)
+    {
+        // на странице с маленькими устройствами
+        id = id.replace("/show-device/","");
     
-            tableContent += '<tr>';
-            tableContent += '<td><a href="#" class="linkshowsmalldevice" rel="' + this._id + '">' + this.name + '</a></td>';
-            tableContent += '<td>' + this.state + '</td>';
-            tableContent += '<td><a href="#" class="linkdeletesmalldevice" rel="' + id + '>' + this.id +'">delete</a></td>';
-            tableContent += '</tr>';
+        // выводим список маленьких устройств
+        $.getJSON( '/smalldevice/' + id, function( data ) {
+            $.each(data, function(){
+        
+                tableContent += '<tr>';
+                tableContent += '<td><a href="#" class="linkshowsmalldevice" rel="' + this._id + '">' + this.name + '</a></td>';
+                tableContent += '<td>' + this.state + '</td>';
+                tableContent += '<td><a href="#" class="linkdeletesmalldevice" rel="' + id + '>' + this.id +'">delete</a></td>';
+                tableContent += '</tr>';
+            });
+            
+            // 
+            $('#smalldeviceListEdit table tbody').html(tableContent);
+            
+            tableContent = '';
+            
+            $.each(data, function(){
+        
+                tableContent += '<tr>';
+                tableContent += '<td><class="linkshowsmalldevice" rel="' + this._id + '">' + this.name + '</a></td>';
+                tableContent += '<td>' + this.state + '</td>';
+                tableContent += '</tr>';
+            });
+    
+            // 
+            $('#smalldeviceListView table tbody').html(tableContent);
         });
+    }
+    else if(id.indexOf("auth") >= 0)
+    {
+        // страница авторизации
         
-        // 
-        $('#smalldeviceListEdit table tbody').html(tableContent);
-        
+    }
+    else
+    {
+        // на странице с большими устройствами
         tableContent = '';
+    
+        // выводим список больших устройств
+        $.getJSON( '/device', function( data ) {
+    
+            // Редактирование списка устройств
+            $.each(data, function(){
         
-        $.each(data, function(){
+                tableContent += '<tr>';
+                tableContent += '<td><a href="#" class="linkshowdevice" rel="' + this._id + '">' + this.device + '</a></td>';
+                tableContent += '<td><a href="#" class="linksavedesc" rel="' + this._id + '">'+ this.description +'</a></td>';
+                tableContent += '<td>' + this.lastAccessTime +'</td>';
+                tableContent += '<td> on </td>';
+                tableContent += '<td><a href="#" class="linkdeletedevice" rel="' + this._id + '">delete</a></td>';
+                tableContent += '</tr>';
+            });
     
-            tableContent += '<tr>';
-            tableContent += '<td><class="linkshowsmalldevice" rel="' + this._id + '">' + this.name + '</a></td>';
-            tableContent += '<td>' + this.state + '</td>';
-            tableContent += '</tr>';
-        });
-   
-        // 
-        $('#smalldeviceListView table tbody').html(tableContent);
-    });
-
-    tableContent = '';
-
-    // выводим список больших устройств
-    $.getJSON( '/device', function( data ) {
-
-        // Редактирование списка устройств
-        $.each(data, function(){
+            // 
+            $('#deviceListEdit table tbody').html(tableContent);
+            
+            tableContent = '';
     
-            tableContent += '<tr>';
-            tableContent += '<td><a href="#" class="linkshowdevice" rel="' + this._id + '">' + this.device + '</a></td>';
-            tableContent += '<td><a href="#" class="linksavedesc" rel="' + this._id + '">'+ this.description +'</a></td>';
-            tableContent += '<td>' + this.lastAccessTime +'</td>';
-            tableContent += '<td> on </td>';
-            tableContent += '<td><a href="#" class="linkdeletedevice" rel="' + this._id + '">delete</a></td>';
-            tableContent += '</tr>';
-        });
-   
-        // 
-        $('#deviceListEdit table tbody').html(tableContent);
+            // Просто отображение устройств
+            $.each(data, function(){
         
-        tableContent = '';
-
-        // Просто отображение устройств
-        $.each(data, function(){
+                tableContent += '<tr>';
+                tableContent += '<td><a href="#" class="linkshowdevice" rel="' + this._id + '">' + this.device + '</a></td>';
+                tableContent += '<td>' + this.description + '</td>';
+                tableContent += '<td>' + this.lastAccessTime +'</td>';
+                tableContent += '<td> on </td>';
+                tableContent += '</tr>';
+            });
     
-            tableContent += '<tr>';
-            tableContent += '<td><a href="#" class="linkshowdevice" rel="' + this._id + '">' + this.device + '</a></td>';
-            tableContent += '<td>' + this.description + '</td>';
-            tableContent += '<td>' + this.lastAccessTime +'</td>';
-            tableContent += '<td> on </td>';
-            tableContent += '</tr>';
+            // 
+            $('#deviceListView table tbody').html(tableContent);
         });
-   
-        // 
-        $('#deviceListView table tbody').html(tableContent);
-    });
+    }
 };
 
 function savedesc()

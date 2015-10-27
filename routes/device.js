@@ -192,6 +192,8 @@ module.exports = function (app) {
 			if (err) throw err;
 			
 			console.log( doc );
+			
+			res.redirect('/');
 		});
 	});
 };
