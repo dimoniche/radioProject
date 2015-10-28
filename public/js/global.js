@@ -274,9 +274,9 @@ function addUser() {
 
     // Super basic validation - increase errorCount variable if any fields are blank
     var errorCount = 0;
-    // $('#addUser input').each(function(index, val) {
-    //     if($(this).val() === '') { errorCount++; }
-    // });
+     $('#addUser input').each(function(index, val) {
+         if($(this).val() === '') { errorCount++; }
+     });
 
     // Check and make sure errorCount's still at zero
     if(errorCount === 0) {
@@ -316,7 +316,7 @@ function addUser() {
     }
     else {
         // If errorCount is more than 0, error out
-        alert('Please fill in all fields');
+        alert('Заполните все поля.');
         return false;
     }
 }

@@ -35,7 +35,7 @@ passport.deserializeUser(function (data, done) {
     try {
         done(null, JSON.parse(data));
     } catch (e) {
-        done(err)
+        done(e)
     }
 });
 

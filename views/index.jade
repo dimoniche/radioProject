@@ -17,9 +17,11 @@ block content
         if(user)
           #user
             div(class="user-card")
-              //img(src="#{user.photoUrl}", alt="")
+              img(src="/images/anon.png", alt="")
               div(class="user-data")
-                span Имя: #{user.login}
+                span Логин: #{user.login}
+                br
+                span Описание: #{user.description}
               div(class="user-data")
                 form(action="/sign-out" method="get")
                   button(type="submit") Выйти
