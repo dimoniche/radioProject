@@ -1,34 +1,45 @@
 extends layout
 
 block content
- if(user)
-    if(user.username == "test")
-      header
-        nav(id="menu",class="default")
-          ul
-            li()
-              a(href="/") Устройства
-            li()
-              a(href="/show_user") Пользователи
+ 
+  if(user)
+      if(user.login == "admin")
+        header
+          nav(id="menu",class="default")
+            ul
+              li()
+                a(href="/") Устройства
+              li()
+                a(href="/show_user") Пользователи
             
-  h1= title
   div(class="demo")
-          if(user)
+    p
+        if(user)
           #user
             div(class="user-card")
-              img(src="#{user.photoUrl}", alt="")
+              //img(src="#{user.photoUrl}", alt="")
               div(class="user-data")
-                span Имя: #{user.username}
+                span Имя: #{user.login}
               div(class="user-data")
                 form(action="/sign-out" method="get")
                   button(type="submit") Выйти
                 div(class="clear")
 
-          if(user.username == "test")
+          if(user.login == "admin")
             //здесь будет добавление новых устройств 
             p
-            form(action="/add-user" method="get")
-              button(type="submit") Добавить нового пользователя
+            #addUser
+                fieldset
+                    input#inputUserName(type='text', placeholder='Логин')
+                    br
+                    p
+                    input#inputUserFullname(type='text', placeholder='Описание')
+                    br
+                    p
+                    input#inputUserPassword(type='text', placeholder='Пароль')
+                    br
+                    p
+                    button#btnAddUser Добавить пользователя
             #wrapper
               p
               #userListEdit
@@ -38,3 +49,4 @@ block content
                           th Описание
                           th Удалить
                       tbody
+           

@@ -20,7 +20,7 @@ config.argv()
 var UserDetails = db.get('user');
 
 //boot
-require('./boot/index')(app);
+require('./boot/index')(app,UserDetails);
 
 // routing
 require('./routes/index')(app);

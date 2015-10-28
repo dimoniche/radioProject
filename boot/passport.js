@@ -1,8 +1,10 @@
+
 var config = require("nconf");
 var passport = require('passport');
 var AuthLocalStrategy = require('passport-local').Strategy;
 
-passport.use(new LocalStrategy(function(username, password, done) {
+module.exports = function (app,UserDetails) {
+ passport.use(new AuthLocalStrategy(function(username, password, done) {
     UserDetails.findOne({
       'login': username, 
     }, function(err, user) {
@@ -15,7 +17,7 @@ passport.use(new LocalStrategy(function(username, password, done) {
       }
 
       if (user.password != password) {
-        return done(null, false{
+        return done(null, false,{
                 message: 'Неверный логин или пароль'
             });
       }
@@ -37,5 +39,4 @@ passport.deserializeUser(function (data, done) {
     }
 });
 
-module.exports = function (app) {
 };
