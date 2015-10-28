@@ -2,28 +2,27 @@ var config = require("nconf");
 var passport = require('passport');
 var AuthLocalStrategy = require('passport-local').Strategy;
 
-passport.use('local', new AuthLocalStrategy(
-    function (username, password, done) {
-                
-        if (username == "admin" && password == "admin") {
-            return done(null, {
-                username: "admin",
-                photoUrl: "https://pp.vk.me/c7003/v7003079/374b/53lwetwOxD8.jpg",
-            });
-        }
+passport.use(new LocalStrategy(function(username, password, done) {
+    UserDetails.findOne({
+      'login': username, 
+    }, function(err, user) {
+      if (err) {
+        return done(err);
+      }
 
-        if (username == "test" && password == "test") {
-            return done(null, {
-                username: "test",
-                photoUrl: "http://cs621418.vk.me/v621418607/18bc6/8IW6NZaXKe8.jpg",
-            });
-        }
+      if (!user) {
+        return done(null, false);
+      }
 
-        return done(null, false, {
-            message: 'Неверный логин или пароль'
-        });
-    }
-));
+      if (user.password != password) {
+        return done(null, false{
+                message: 'Неверный логин или пароль'
+            });
+      }
+
+      return done(null, user);
+    });
+}));
 
 passport.serializeUser(function (user, done) {
     done(null, JSON.stringify(user));

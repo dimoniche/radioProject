@@ -17,6 +17,8 @@ config.argv()
      next();
  });
 
+var UserDetails = db.get('user');
+
 //boot
 require('./boot/index')(app);
 

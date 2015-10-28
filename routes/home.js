@@ -4,4 +4,9 @@ module.exports = function (app) {
             user: req.user
         });
     });
+    app.get('/show_user', function (req, res) {
+        res.render('user', {
+            user: req.user
+        });
+    });
 };

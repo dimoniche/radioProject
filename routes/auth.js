@@ -10,6 +10,7 @@ module.exports = function (app) {
         }
         
         res.render('auth', {
+            user: req.user,
             error: req.flash('error')
         });
     });

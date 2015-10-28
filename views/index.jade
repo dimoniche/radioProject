@@ -1,6 +1,17 @@
 extends layout
 
 block content
+
+  if(user)
+    if(user.username == "test")
+      header
+        nav(id="menu",class="default")
+          ul
+            li()
+              a(href="/") Устройства
+            li()
+              a(href="/show_user") Пользователи
+
   div(class="demo")
     p
         if(user)
@@ -44,12 +55,14 @@ block content
                           th Состояние
                         tbody
         else
-          div(class="auth-form")
-            form(action="/auth" method="post")
-              div
-              input(type="text" name="username" class="input user" placeholder="логин")
-              div
-              input(type="password" name="password" class="input password" placeholder="пароль")
-              div(class="buttons")
-              span Логин и пароль <strong>admin</strong>&nbsp;
-              button(type="submit") Войти
+          div(class="parent")
+            div(class="block")
+              div(class="auth-form")
+                  form(action="/auth" method="post")
+                    div
+                    input(type="text" name="username" class="input user" placeholder="логин")
+                    div
+                    input(type="password" name="password" class="input password" placeholder="пароль")
+                    div(class="buttons")
+                    span Введите логин и пароль &nbsp;
+                    button(type="submit") Войти
