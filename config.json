@@ -1,9 +1,9 @@
 {
     "app": {
-        "host": "localhost",
+        "host": "http://radioproject.azurewebsites.net/",
         "port": 80,
         "schema": "http",
-        "url": "http://domain.tld"
+        "url": "http://radioproject.azurewebsites.net/"
     },
 
     "session": {
