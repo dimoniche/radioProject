@@ -64,7 +64,7 @@ module.exports = function (app) {
 			// узнаем что было
 			answer = doc.answer;
 			
-			answer[answer.length] = {'id': answer.length,'name': "Устройство", 'state': 'on','lastTimeAccess': new Date()};	// добавим маленькое устройство
+			answer[answer.length] = {'id': answer.length,'name': "Устройство " + answer.length, 'state': 'on','lastTimeAccess': new Date()};	// добавим маленькое устройство
 
 			collection.findAndModify(
 			{
@@ -137,6 +137,45 @@ module.exports = function (app) {
 		});
 	});
 	
+	app.get('/updatestate/:id', function(req, res) {
+		
+		var db = req.db;
+		var collection = db.get('devices');
+		var deviceToDelete = req.params.id;
+		
+		var arr = deviceToDelete.split(">");
+		var answer;
+		
+		collection.findOne({ '_id': arr[0] }).on('success', function (doc) {
+			
+			answer = doc.answer;
+			
+			var val = parseInt(arr[1]);
+			
+			if(answer[val].state == 'on')
+				answer[val].state = 'off';
+			else
+				answer[val].state = 'on';
+
+			collection.findAndModify(
+			{
+				"query": { "_id": arr[0] },
+				"update": { "$set": { 
+					"answer": answer,
+					'lastAccessTime': new Date(),
+				}},
+				"options": { "new": true, "upsert": true }
+			},
+			function(err,doc) {
+				if (err) throw err;
+				
+				res.send((err === null) ? { msg: '' } : { msg:'error: ' + err });
+				
+				console.log( doc );
+			});
+		});
+	});
+				
 	app.get('/show-device/:id', function(req, res) {
 		
 		var db = req.db;

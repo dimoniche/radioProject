@@ -16,8 +16,10 @@ $(document).ready(function() {
     // добавление маленького устройства
     $('#addsmalldevice').on('click', addsmalldevice);
     // удаление устройства при редактировании
-    $('#smalldeviceListEdit table tbody').on('click', 'td a.linkdeletesmalldevice', deletesmallDevice);
-    
+    $('#smalldeviceListEdit table tbody').on('click', 'td a.linkdeletesmalldevice', deletesmallDevice);    
+    // обновление состояния
+    $('#smalldeviceListEdit table tbody').on('click', 'td a.linkupdatestate', updateState);
+
      $('#userListEdit table tbody').on('click', 'td a.linkdeleteuser', deleteuser);
     
     // кнопка сохранения названия девайса
@@ -26,6 +28,24 @@ $(document).ready(function() {
     $('#btnAddUser').on('click', addUser);
 });
     
+function updateState() {
+    
+    $.ajax({
+        type: 'GET',
+        url: '/updatestate/' + $(this).attr('rel')
+    }).done(function( response ) {
+
+        // Check for a successful (blank) response
+        if (response.msg === '') {
+        }
+        else {
+            alert('Error: ' + response.msg);
+        }
+
+        // Update the table
+        populateTable();
+    });
+}
 function renameDesc() {
     
     var namedesc = {name: $('#renameDesc fieldset input#inputDeviceName').val()};
@@ -72,7 +92,7 @@ function populateTable() {
                 tableContent += '<tr>';
                 tableContent += '<td><a href="#" class="linkshowuser" rel="' + this._id + '">' + this.login + '</a></td>';
                 tableContent += '<td>' + this.description + '</td>';
-                tableContent += '<td><a href="#" class="linkdeleteuser" rel="' + this._id +'">delete</a></td>';
+                tableContent += '<td><a href="#" class="linkdeleteuser" rel="' + this._id +'"><img src="/images/delete.jpg" alt="" width="25" height="25"></a></td>';
                 tableContent += '</tr>';
             });
             
@@ -97,7 +117,7 @@ function populateTable() {
 
                 tableContent += '<tr>';
                 tableContent += '<td><a href="#" class="linkshowsmalldevice" rel="' + this._id + '">' + this.name + '</a></td>';
-                tableContent += '<td>' + state + '</td>';
+                tableContent += '<td><a href="#" class="linkupdatestate" rel="' + id + '>' + this.id +'">' + state + '</a></td>';
                 tableContent += '<td><a href="#" class="linkdeletesmalldevice" rel="' + id + '>' + this.id +'"><img src="/images/delete.jpg" alt="" width="25" height="25"></a></td>';
                 tableContent += '</tr>';
             });
