@@ -88,10 +88,17 @@ function populateTable() {
         $.getJSON( '/smalldevice/' + id, function( data ) {
             $.each(data, function(){
         
+                var state = '<img src="/images/green.jpg" alt="" width="25" height="25">';
+
+                if(this.state == 'off')
+                {
+                    state = '<img src="/images/red.jpg" alt="" width="25" height="25">';
+                }
+
                 tableContent += '<tr>';
                 tableContent += '<td><a href="#" class="linkshowsmalldevice" rel="' + this._id + '">' + this.name + '</a></td>';
-                tableContent += '<td>' + this.state + '</td>';
-                tableContent += '<td><a href="#" class="linkdeletesmalldevice" rel="' + id + '>' + this.id +'">delete</a></td>';
+                tableContent += '<td>' + state + '</td>';
+                tableContent += '<td><a href="#" class="linkdeletesmalldevice" rel="' + id + '>' + this.id +'"><img src="/images/delete.jpg" alt="" width="25" height="25"></a></td>';
                 tableContent += '</tr>';
             });
             
@@ -102,9 +109,16 @@ function populateTable() {
             
             $.each(data, function(){
         
+                var state = '<img src="/images/green.jpg" alt="" width="25" height="25">';
+
+                if(this.state == 'off')
+                {
+                    state = '<img src="/images/red.jpg" alt="" width="25" height="25">';
+                }
+
                 tableContent += '<tr>';
                 tableContent += '<td><class="linkshowsmalldevice" rel="' + this._id + '">' + this.name + '</a></td>';
-                tableContent += '<td>' + this.state + '</td>';
+                tableContent += '<td>' + state + '</td>';
                 tableContent += '</tr>';
             });
     
@@ -124,16 +138,25 @@ function populateTable() {
     
         // выводим список больших устройств
         $.getJSON( '/device', function( data ) {
-    
+            
             // Редактирование списка устройств
             $.each(data, function(){
         
+                var state = '<img src="/images/green.jpg" alt="" width="25" height="25">';
+
+                $.each(this.answer, function(){
+                    if(this.state == 'off')
+                    {
+                        state = '<img src="/images/red.jpg" alt="" width="25" height="25">';
+                    }
+                });
+
                 tableContent += '<tr>';
                 tableContent += '<td><a href="#" class="linkshowdevice" rel="' + this._id + '">' + this.device + '</a></td>';
                 tableContent += '<td><a href="#" class="linksavedesc" rel="' + this._id + '">'+ this.description +'</a></td>';
                 tableContent += '<td>' + this.lastAccessTime +'</td>';
-                tableContent += '<td> on </td>';
-                tableContent += '<td><a href="#" class="linkdeletedevice" rel="' + this._id + '">delete</a></td>';
+                tableContent += '<td>' + state + '</td>';
+                tableContent += '<td><a href="#" class="linkdeletedevice" rel="' + this._id + '"><img src="/images/delete.jpg" alt="" width="25" height="25"></a></td>';
                 tableContent += '</tr>';
             });
     
@@ -145,11 +168,20 @@ function populateTable() {
             // Просто отображение устройств
             $.each(data, function(){
         
+                var state = '<img src="/images/green.jpg" alt="" width="25" height="25">';
+
+                $.each(this.answer, function(){
+                    if(this.state == 'off')
+                    {
+                        state = '<img src="/images/red.jpg" alt="" width="25" height="25">';
+                    }
+                });
+
                 tableContent += '<tr>';
                 tableContent += '<td><a href="#" class="linkshowdevice" rel="' + this._id + '">' + this.device + '</a></td>';
                 tableContent += '<td>' + this.description + '</td>';
                 tableContent += '<td>' + this.lastAccessTime +'</td>';
-                tableContent += '<td> on </td>';
+                tableContent += '<td>' + state + '</td>';
                 tableContent += '</tr>';
             });
     

@@ -5,7 +5,7 @@ module.exports = function (app) {
        	var db = req.db;
        	var collection = db.get('devices');
 
-		collection.find({},{},function(e,docs){
+		collection.find({},{sort: {lastAccessTime : -1}},function(e,docs){
 			res.json(docs);
 		});
     });
@@ -27,14 +27,14 @@ module.exports = function (app) {
 		// здесь добавление одного большого и одного маленького устройства
 
 		var answer = new Array();
-		answer[answer.length] = {'id': answer.length,'name': "small device", 'state': 'on'};	// маленькое устройство
+		answer[answer.length] = {'id': answer.length,'name': "Устройство", 'state': 'on','lastTimeAccess': new Date()};	// маленькое устройство
 
 		// большое устройство
         var newDevice = {
 			'deviceId': answer.length,
             'device': "device",
-            'description': "device_description",
-			'lastAccessTime': new Date().toLocaleString("ru", { year: 'numeric', month: 'long' }),
+            'description': "Концентратор",
+			'lastAccessTime': new Date(),
             'answer': answer
         }
 
@@ -64,14 +64,14 @@ module.exports = function (app) {
 			// узнаем что было
 			answer = doc.answer;
 			
-			answer[answer.length] = {'id': answer.length,'name': "small device", 'state': 'on'};	// добавим маленькое устройство
+			answer[answer.length] = {'id': answer.length,'name': "Устройство", 'state': 'on','lastTimeAccess': new Date()};	// добавим маленькое устройство
 
 			collection.findAndModify(
 			{
 				"query": { "_id": id },
 				"update": { "$set": { 
 					"answer": answer,
-					'lastAccessTime': new Date().toLocaleString("ru", { year: 'numeric', month: 'long' }),
+					'lastAccessTime': new Date(),
 				}},
 				"options": { "new": true, "upsert": true }
 			},
@@ -123,7 +123,7 @@ module.exports = function (app) {
 				"query": { "_id": arr[0] },
 				"update": { "$set": { 
 					"answer": answer,
-					'lastAccessTime': new Date().toLocaleString("ru", { year: 'numeric', month: 'long' }),
+					'lastAccessTime': new Date(),
 				}},
 				"options": { "new": true, "upsert": true }
 			},
@@ -184,7 +184,7 @@ module.exports = function (app) {
 			"query": { "_id": deviceToShow },
 			"update": { "$set": { 
 				"description": name,
-				'lastAccessTime': new Date().toLocaleString("ru", { year: 'numeric', month: 'long' }),
+				'lastAccessTime': new Date(),
 			}},
 			"options": { "new": true, "upsert": true }
 		},
