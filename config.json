@@ -1,9 +1,9 @@
 {
     "app": {
-        "host": "http://radioproject.azurewebsites.net/",
+        "host": "http://project-radio.azurewebsites.net/",
         "port": 8023,
         "schema": "http",
-        "url": "http://radioproject.azurewebsites.net/"
+        "url": "http://project-radio.azurewebsites.net/"
     },
 
     "session": {
