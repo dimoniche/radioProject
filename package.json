@@ -9,12 +9,11 @@
     "connect-flash": "*",
     "connect-memcached": "*",
     "express": "3.4.8",
-    "jade": "*",
+    "jade": "~1.9.2",
     "mongodb": "^2.0.46",
     "nconf": "*",
     "passport": "*",
-    "passport-facebook": "*",
-    "passport-local": "*",
-    "passport-vkontakte": "*"
+    "monk": "~1.0.1",
+    "passport-local": "*"
   }
 }
