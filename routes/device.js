@@ -215,7 +215,6 @@ module.exports = function (app) {
 		var db = req.db;
 		var collection = db.get('devices');
 		var deviceToShow = req.params.id;
-		var currentuser = req.user;
         var name = req.body.name;
 
 		collection.findAndModify(

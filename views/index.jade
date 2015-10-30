@@ -3,14 +3,18 @@ extends layout
 block content
 
   if(user)
-      if(user.login == "admin")
+      if(user.login == "admin" || user.login == "emul")
         header
           nav(id="menu",class="default")
             ul
               li()
                 a(href="/") Устройства
-              li()
-                a(href="/show_user") Пользователи
+              if(user.login == "admin")
+                li()
+                  a(href="/show_user") Пользователи
+              if(user.login == "emul")
+                li()
+                  a(href="/show_emul") Эмулятор
 
   div(class="demo")
     p

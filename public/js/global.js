@@ -26,7 +26,28 @@ $(document).ready(function() {
     $('#saveDeviceName').on('click', renameDesc);
     
     $('#btnAddUser').on('click', addUser);
+    
+    // кнопка отправки запроса эмулятором
+    $('#ButsendRequest').on('click', sendRequest);
+
 });
+
+function sendRequest() {
+
+        var request = {'DeviceId': $('#sendRequest fieldset input#inputDeviceId').val(), 
+                       'Device':   $('#sendRequest fieldset input#inputDevice').val(), 
+                       'Answer':   $('#sendRequest fieldset input#inputAnswer').val()
+                       };
+        
+        $.ajax({
+            type: 'POST',
+            data: request,
+            url: '/sendRequest',
+            dataType: 'JSON'
+        }).done(function( response ) {
+
+        });
+}
     
 function updateState() {
     

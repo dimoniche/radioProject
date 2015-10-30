@@ -9,4 +9,9 @@ module.exports = function (app) {
             user: req.user
         });
     });
+    app.get('/show_emul', function (req, res) {
+        res.render('emulator', {
+            user: req.user
+        });
+    });
 };

@@ -1,6 +1,6 @@
 {
     "app": {
-        "host": "http://project-radio.azurewebsites.net/",
+        "host": "localhost",
         "port": 8023,
         "schema": "http",
         "url": "http://project-radio.azurewebsites.net/"

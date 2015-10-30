@@ -1,0 +1,25 @@
+extends layout
+
+block content
+
+ h1= title
+  div(class="demo")
+    a(class="permalink", href="/") ← назад
+    p
+    h1 Эмуляция реального устройства
+    #wrapper
+      #sendRequest
+        fieldset
+          p Поле deviceId
+          input#inputDeviceId(type='text', value=" ")
+          br
+          p Поле device (описание устройства)
+          p
+          input#inputDevice(type='text', value=" ")
+          br
+          p Поле ответов устройств answer
+          p
+          input#inputAnswer(type='text', value="{'id': '1','name': 'small device', 'state': 'on','lastTimeAccess': '30.10.2015''}",size = 100)
+          br
+          p
+          button#ButsendRequest(rel="device._id") Отправить запрос
