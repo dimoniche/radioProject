@@ -34,9 +34,13 @@ $(document).ready(function() {
 
 function sendRequest() {
 
+        var answer = new Array();
+        
+        answer[answer.length] = $('#sendRequest fieldset input#inputAnswer').val();
+        
         var request = {'DeviceId': $('#sendRequest fieldset input#inputDeviceId').val(), 
                        'Device':   $('#sendRequest fieldset input#inputDevice').val(), 
-                       'Answer':   $('#sendRequest fieldset input#inputAnswer').val()
+                       'Answer':   answer
                        };
         
         $.ajax({

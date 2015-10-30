@@ -11,15 +11,15 @@ block content
       #sendRequest
         fieldset
           p Поле deviceId
-          input#inputDeviceId(type='text', value=" ")
+          input#inputDeviceId(type='text', value="100")
           br
           p Поле device (описание устройства)
           p
-          input#inputDevice(type='text', value=" ")
+          input#inputDevice(type='text', value="Устройство")
           br
           p Поле ответов устройств answer
           p
-          input#inputAnswer(type='text', value="{'id': '1','name': 'small device', 'state': 'on','lastTimeAccess': '30.10.2015''}",size = 100)
+          input#inputAnswer(type='text', value=answer,size = 100)
           br
           p
           button#ButsendRequest(rel="device._id") Отправить запрос

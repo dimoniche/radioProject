@@ -78,37 +78,45 @@ s.on('request', function(request, response) {
      var new_device = JSON.parse(data);
      var collection = db.get('devices');
  
+    var answer = new Array();
+ 	answer[answer.length] = JSON.parse(new_device.Answer);
+ 
      // большое устройство - сформируем объект
      var newDevice = {
          'deviceId': new_device.DeviceId,
          'device': new_device.Device,
          'description': "Концентратор",
          'lastAccessTime': new Date(),
-         'answer': new_device.Answer,
+         'answer': answer,
      }
  
-//      collection.findOne({ 'deviceId': new_device.deviceId }).on('success', function (doc) {
-//          
-//          console.log('Устройство найдено');
-//  
-//          // нашли уже такой - обновим статусы
-//          collection.findAndModify(
-//  			{
-//  				"query": { "deviceId": new_device.deviceId },
-//  				"update": { "$set": { 
-//  					"answer": new_device.answer,
-//  					'lastAccessTime': new Date(),
-//  				}},
-//  				"options": { "new": true, "upsert": true }
-//  			});
-//              
-//              console.log('Устройство обновлено');
-//              return;
-//      });
- 
-     // заносим в базу запись об новом устройстве
-     collection.insert(newDevice, function(err, result){
- 
-     });
- 
+      collection.findOne({ 'deviceId': newDevice.deviceId }).on('success', function (doc) {
+          
+          if(doc == undefined)
+          {
+                // заносим в базу запись об новом устройстве
+                collection.insert(newDevice, function(err, result){
+                    console.log('Устройство добавлено');
+                });
+          }
+          else
+          {
+            console.log('Устройство найдено');
+    
+            // нашли уже такой - обновим статусы
+            collection.findAndModify(
+                {
+                    "query": { "deviceId": newDevice.deviceId },
+                    "update": { "$set": { 
+                        "device": newDevice.device,
+                        "answer": newDevice.answer,
+                        'lastAccessTime': new Date(),
+                    }},
+                    "options": { "new": true, "upsert": true }
+                });
+                
+                console.log('Устройство обновлено');
+          }
+      });
+
  }
