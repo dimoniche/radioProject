@@ -3,14 +3,14 @@
 apt-get update
 
 #ставим nodejs
-apt-get install curl
+apt-get install -y curl
 curl -sL https://deb.nodesource.com/setup | sudo bash -
-apt-get install nodejs
-apt-get install build-essential
+apt-get install -y nodejs
+apt-get install -y build-essential
 
 # ставим git
-apt-get install libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev
-apt-get install git
+apt-get install -y libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev
+apt-get install -y git
 
 # ставим проект
 git clone https://github.com/dimoniche/radioProject.git
