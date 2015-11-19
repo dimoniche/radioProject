@@ -6,8 +6,8 @@ var app = express();
 
 var mongo = require('mongodb');
 var monk = require('monk');
-//var db = monk('localhost:27017/radio');
-var db = monk('dimoniche:lbvsx@ds045664.mongolab.com:45664/devices');
+var db = monk('localhost:27017/radio');
+//var db = monk('dimoniche:lbvsx@ds045664.mongolab.com:45664/devices');
 
 config.argv()
     .env()
