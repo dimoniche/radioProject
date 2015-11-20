@@ -24,10 +24,7 @@ service mongod start
 
 # запустим сервис
 npm install forever -g
-npm install forever-monitor
-
 
 # запускаем приложение
 forever start app.js
-
 
