@@ -79,7 +79,7 @@ s.on('request', function(request, response) {
      var collection = db.get('devices');
  
     var answer = new Array();
- 	answer[answer.length] = JSON.parse(new_device.Answer);
+ 	answer = JSON.parse(new_device.Answer);
  
      // большое устройство - сформируем объект
      var newDevice = {
