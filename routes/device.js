@@ -17,8 +17,15 @@ module.exports = function (app) {
 		var id = req.params.id;
 
 		collection.findOne({ '_id': id }).on('success', function (doc) {
-            var answer = doc.answer;
-			res.json(doc.answer);
+            
+            if(doc != undefined)
+            {
+                if(doc.answer != undefined)
+                {
+                    var answer = doc.answer;
+                    res.json(doc.answer);
+                }
+            }
 		});
     });
 

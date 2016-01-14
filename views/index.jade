@@ -36,7 +36,7 @@ block content
             h1 Ретрансляторы
             form(action="/add-device" method="get")
               button(type="submit") Добавить новое устройство
-            #wrapper
+              //#wrapper
               p
               #deviceListEdit
                   table
@@ -51,8 +51,8 @@ block content
                           th Удалить
                       tbody
           else  
-            // это отображение текущих устройств 
-            #wrapper
+              // это отображение текущих устройств 
+              //#wrapper
               h1 Ретрансляторы
               div(class="clear")
                 #deviceListView

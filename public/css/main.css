@@ -32,8 +32,8 @@ a:hover {
 }
 
 .demo {
-    width: 600px;
-    margin: 20px auto;
+    width: 900px;
+    margin: 0px auto;
     padding: 10px;
     color: #4F6B72;
     font-family: "PT Sans", Verdana, Arial, sans-serif;
@@ -135,7 +135,7 @@ a:hover {
 }
 
 #wrapper {
-	padding-left:12px;
+	padding-left:100px;
 	position:relative;
 }
 
