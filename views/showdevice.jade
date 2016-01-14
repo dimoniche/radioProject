@@ -4,7 +4,7 @@ block content
   div(class="demo")
     a(class="permalink", href="/") ← назад
     p
-    h1 Список подключенных устройств к #{device.description}
+    h1 БМС (#{device.description})
     div(class="clear")
       if(user)
         #user
@@ -17,8 +17,12 @@ block content
             #smalldeviceListEdit
                 table
                     thead
-                        th Название
-                        th Состояние
+                        th Идентификатор
+                        th Описание
+                        th Включено
+                        th Канал 1
+                        th Канал 2
+                        th Канал 3
                         th Удалить
                     tbody
           else  
@@ -29,8 +33,12 @@ block content
             #smalldeviceListView
                   table
                       thead
-                          th Название
-                          th Состояние
+                        th Идентификатор
+                        th Описание
+                        th Включено
+                        th Канал 1
+                        th Канал 2
+                        th Канал 3
                       tbody
       
 

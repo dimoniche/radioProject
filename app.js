@@ -78,15 +78,28 @@ s.on('request', function(request, response) {
      var new_device = JSON.parse(data);
      var collection = db.get('devices');
  
-    var answer = new Array();
- 	answer = JSON.parse(new_device.Answer);
- 
+     var new_answer = new Array();
+     new_answer = JSON.parse(new_device.Answer);
+
+     var i = 0;
+
+     var answer = new Array();
+
+     new_answer.forEach(function(element) {
+         answer[i] = {'id': new_answer[i].id,'name': new_answer[i].name, 'state': new_answer[i].state, 'ch1':new_answer[i].ch1, 'ch2':new_answer[i].ch2, 'ch3':new_answer[i].ch3};
+         i++;
+     }, this);
+
      // большое устройство - сформируем объект
      var newDevice = {
          'deviceId': new_device.DeviceId,
          'device': new_device.Device,
-         'description': "Концентратор",
+         'description': "Ретранслятор",
          'lastAccessTime': new Date(),
+         'ch1': new_device.ch1,
+         'ch2': new_device.ch2,
+         'ch3': new_device.ch3,
+         'subnet': new_device.subnet,
          'answer': answer,
      }
  

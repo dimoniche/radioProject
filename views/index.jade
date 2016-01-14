@@ -33,7 +33,7 @@ block content
 
           if(user.login == "admin")
             //здесь будет добавление новых устройств 
-            p
+            h1 Ретрансляторы
             form(action="/add-device" method="get")
               button(type="submit") Добавить новое устройство
             #wrapper
@@ -41,24 +41,30 @@ block content
               #deviceListEdit
                   table
                       thead
-                          th Название
+                          th Идентификатор
                           th Описание
                           th Время 
-                          th Состояние
+                          th Канал 1
+                          th Канал 2
+                          th Канал 3
+                          th Сеть БМС
                           th Удалить
                       tbody
           else  
             // это отображение текущих устройств 
             #wrapper
-              h1 Список устройств
+              h1 Ретрансляторы
               div(class="clear")
                 #deviceListView
                     table
                         thead
-                          th Название
+                          th Идентификатор
                           th Описание
-                          th Время 
-                          th Состояние
+                          th Включено 
+                          th Канал 1
+                          th Канал 2
+                          th Канал 3
+                          th Сеть БМС
                         tbody
         else
           div(class="parent")

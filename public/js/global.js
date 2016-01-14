@@ -133,16 +133,41 @@ function populateTable() {
         $.getJSON( '/smalldevice/' + id, function( data ) {
             $.each(data, function(){
         
-                var state = '<img src="/images/green.jpg" alt="" width="25" height="25">';
+                var state = 'Да';
+                var ch1 = '<img src="/images/green.jpg" alt="" width="25" height="25">';
+                var ch2 = '<img src="/images/green.jpg" alt="" width="25" height="25">';
+                var ch3 = '<img src="/images/green.jpg" alt="" width="25" height="25">';
 
                 if(this.state == 'off')
                 {
-                    state = '<img src="/images/red.jpg" alt="" width="25" height="25">';
+                    state = 'Нет';
+                }
+                if(this.ch1 == 'off' || this.ch1 == 'fail')
+                {
+                    ch1 = '<img src="/images/red.jpg" alt="" width="25" height="25">';
+                }
+                if(this.ch2 == 'off' || this.ch2 == 'fail')
+                {
+                    ch2 = '<img src="/images/red.jpg" alt="" width="25" height="25">';
+                }
+                if(this.ch3 == 'off' || this.ch3 == 'fail')
+                {
+                    ch3 = '<img src="/images/red.jpg" alt="" width="25" height="25">';
                 }
 
                 tableContent += '<tr>';
-                tableContent += '<td><a href="#" class="linkshowsmalldevice" rel="' + this._id + '">' + this.name + '</a></td>';
-                tableContent += '<td><a href="#" class="linkupdatestate" rel="' + id + '>' + this.id +'">' + state + '</a></td>';
+                //tableContent += '<td><a href="#" class="linkshowsmalldevice" rel="' + this._id + '">' + this.id + '</a></td>';
+                // ссылок редактирование пока нет
+                tableContent += '<td>' + this.id + '</td>';
+                //tableContent += '<td><a href="#" class="linkshowsmalldevice" rel="' + this._id + '">'+ this.name +'</a></td>';
+                // ссылок редактирование пока нет
+                tableContent += '<td>' + this.name + '</td>';
+                //tableContent += '<td><a href="#" class="linkupdatestate" rel="' + id + '>' + this.id +'">' + state + '</a></td>';
+                // менять состояние пока не будем
+                tableContent += '<td>' + state + '</td>';
+                tableContent += '<td>' + ch1 + '</td>';
+                tableContent += '<td>' + ch2 + '</td>';
+                tableContent += '<td>' + ch3 + '</td>';
                 tableContent += '<td><a href="#" class="linkdeletesmalldevice" rel="' + id + '>' + this.id +'"><img src="/images/delete.jpg" alt="" width="25" height="25"></a></td>';
                 tableContent += '</tr>';
             });
@@ -154,16 +179,41 @@ function populateTable() {
             
             $.each(data, function(){
         
-                var state = '<img src="/images/green.jpg" alt="" width="25" height="25">';
+                var state = 'Да';
+                var ch1 = '<img src="/images/green.jpg" alt="" width="25" height="25">';
+                var ch2 = '<img src="/images/green.jpg" alt="" width="25" height="25">';
+                var ch3 = '<img src="/images/green.jpg" alt="" width="25" height="25">';
 
                 if(this.state == 'off')
                 {
-                    state = '<img src="/images/red.jpg" alt="" width="25" height="25">';
+                    state = 'Нет';
+                }
+                if(this.ch1 == 'off' || this.ch1 == 'fail')
+                {
+                    ch1 = '<img src="/images/red.jpg" alt="" width="25" height="25">';
+                }
+                if(this.ch2 == 'off' || this.ch2 == 'fail')
+                {
+                    ch2 = '<img src="/images/red.jpg" alt="" width="25" height="25">';
+                }
+                if(this.ch3 == 'off' || this.ch3 == 'fail')
+                {
+                    ch3 = '<img src="/images/red.jpg" alt="" width="25" height="25">';
                 }
 
                 tableContent += '<tr>';
-                tableContent += '<td><class="linkshowsmalldevice" rel="' + this._id + '">' + this.name + '</a></td>';
+                //tableContent += '<td><a href="#" class="linkshowsmalldevice" rel="' + this._id + '">' + this.id + '</a></td>';
+                // ссылок редактирование пока нет
+                tableContent += '<td>' + this.id + '</td>';
+                //tableContent += '<td><a href="#" class="linkshowsmalldevice" rel="' + this._id + '">'+ this.name +'</a></td>';
+                // ссылок редактирование пока нет
+                tableContent += '<td>' + this.name + '</td>';
+                //tableContent += '<td><a href="#" class="linkupdatestate" rel="' + id + '>' + this.id +'">' + state + '</a></td>';
+                // менять состояние пока не будем
                 tableContent += '<td>' + state + '</td>';
+                tableContent += '<td>' + ch1 + '</td>';
+                tableContent += '<td>' + ch2 + '</td>';
+                tableContent += '<td>' + ch3 + '</td>';
                 tableContent += '</tr>';
             });
     
@@ -187,20 +237,38 @@ function populateTable() {
             // Редактирование списка устройств
             $.each(data, function(){
         
-                var state = '<img src="/images/green.jpg" alt="" width="25" height="25">';
+                var net = '<img src="/images/green.jpg" alt="" width="25" height="25">';
+                var ch1 = '<img src="/images/green.jpg" alt="" width="25" height="25">';
+                var ch2 = '<img src="/images/green.jpg" alt="" width="25" height="25">';
+                var ch3 = '<img src="/images/green.jpg" alt="" width="25" height="25">';
 
                 $.each(this.answer, function(){
-                    if(this.state == 'off')
+                    if(this.net == 'off' || this.net == 'fail')
                     {
-                        state = '<img src="/images/red.jpg" alt="" width="25" height="25">';
+                        net = '<img src="/images/red.jpg" alt="" width="25" height="25">';
+                    }
+                    if(this.ch1 == 'off' || this.ch1 == 'fail')
+                    {
+                        ch1 = '<img src="/images/red.jpg" alt="" width="25" height="25">';
+                    }
+                    if(this.ch2 == 'off' || this.ch2 == 'fail')
+                    {
+                        ch2 = '<img src="/images/red.jpg" alt="" width="25" height="25">';
+                    }
+                    if(this.ch3 == 'off' || this.ch3 == 'fail')
+                    {
+                        ch3 = '<img src="/images/red.jpg" alt="" width="25" height="25">';
                     }
                 });
 
                 tableContent += '<tr>';
-                tableContent += '<td><a href="#" class="linkshowdevice" rel="' + this._id + '">' + this.device + '</a></td>';
+                tableContent += '<td><a href="#" class="linkshowdevice" rel="' + this._id + '">' + this.deviceId + '</a></td>';
                 tableContent += '<td><a href="#" class="linksavedesc" rel="' + this._id + '">'+ this.description +'</a></td>';
                 tableContent += '<td>' + this.lastAccessTime +'</td>';
-                tableContent += '<td>' + state + '</td>';
+                tableContent += '<td>' + ch1 + '</td>';
+                tableContent += '<td>' + ch2 + '</td>';
+                tableContent += '<td>' + ch3 + '</td>';
+                tableContent += '<td>' + net + '</td>';
                 tableContent += '<td><a href="#" class="linkdeletedevice" rel="' + this._id + '"><img src="/images/delete.jpg" alt="" width="25" height="25"></a></td>';
                 tableContent += '</tr>';
             });
@@ -213,20 +281,38 @@ function populateTable() {
             // Просто отображение устройств
             $.each(data, function(){
         
-                var state = '<img src="/images/green.jpg" alt="" width="25" height="25">';
+                var net = '<img src="/images/green.jpg" alt="" width="25" height="25">';
+                var ch1 = '<img src="/images/green.jpg" alt="" width="25" height="25">';
+                var ch2 = '<img src="/images/green.jpg" alt="" width="25" height="25">';
+                var ch3 = '<img src="/images/green.jpg" alt="" width="25" height="25">';
 
                 $.each(this.answer, function(){
-                    if(this.state == 'off')
+                    if(this.net == 'off' || this.net == 'fail')
                     {
-                        state = '<img src="/images/red.jpg" alt="" width="25" height="25">';
+                        net = '<img src="/images/red.jpg" alt="" width="25" height="25">';
+                    }
+                    if(this.ch1 == 'off' || this.ch1 == 'fail')
+                    {
+                        ch1 = '<img src="/images/red.jpg" alt="" width="25" height="25">';
+                    }
+                    if(this.ch2 == 'off' || this.ch2 == 'fail')
+                    {
+                        ch2 = '<img src="/images/red.jpg" alt="" width="25" height="25">';
+                    }
+                    if(this.ch3 == 'off' || this.ch3 == 'fail')
+                    {
+                        ch3 = '<img src="/images/red.jpg" alt="" width="25" height="25">';
                     }
                 });
 
                 tableContent += '<tr>';
-                tableContent += '<td><a href="#" class="linkshowdevice" rel="' + this._id + '">' + this.device + '</a></td>';
+                tableContent += '<td><a href="#" class="linkshowdevice" rel="' + this._id + '">' + this.deviceId + '</a></td>';
                 tableContent += '<td>' + this.description + '</td>';
                 tableContent += '<td>' + this.lastAccessTime +'</td>';
-                tableContent += '<td>' + state + '</td>';
+                tableContent += '<td>' + ch1 + '</td>';
+                tableContent += '<td>' + ch2 + '</td>';
+                tableContent += '<td>' + ch3 + '</td>';
+                tableContent += '<td>' + net + '</td>';
                 tableContent += '</tr>';
             });
     

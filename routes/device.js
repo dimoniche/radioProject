@@ -17,6 +17,7 @@ module.exports = function (app) {
 		var id = req.params.id;
 
 		collection.findOne({ '_id': id }).on('success', function (doc) {
+            var answer = doc.answer;
 			res.json(doc.answer);
 		});
     });
@@ -27,14 +28,17 @@ module.exports = function (app) {
 		// здесь добавление одного большого и одного маленького устройства
 
 		var answer = new Array();
-		answer[answer.length] = {'id': answer.length,'name': "Устройство", 'state': 'on','lastTimeAccess': new Date()};	// маленькое устройство
+		answer[answer.length] = {'id': answer.length,'name': "БМС1", 'state': 'on', 'ch1':'ok', 'ch2':'ok', 'ch3':'ok'};	// маленькое устройство
 
 		// большое устройство
         var newDevice = {
 			'deviceId': answer.length,
-            'device': "device",
-            'description': "Концентратор",
+            'description': "Ретранслятор",
 			'lastAccessTime': new Date(),
+            'ch1':'ok',
+            'ch2':'ok',
+            'ch3':'ok',
+            'subnet':'ok',
             'answer': answer
         }
 
@@ -63,8 +67,8 @@ module.exports = function (app) {
 		
 			// узнаем что было
 			answer = doc.answer;
-			
-			answer[answer.length] = {'id': answer.length,'name': "Устройство " + answer.length, 'state': 'on','lastTimeAccess': new Date()};	// добавим маленькое устройство
+	
+            answer[answer.length] = {'id': answer.length,'name': "БМС" + (answer.length + 1), 'state': 'on', 'ch1':'ok', 'ch2':'ok', 'ch3':'ok'};    // добавим маленькое устройство
 
 			collection.findAndModify(
 			{
@@ -184,7 +188,7 @@ module.exports = function (app) {
 		var currentuser = req.user;
 
 		collection.findOne({ '_id': deviceToShow }).on('success', function (doc) {
-			
+
 			res.render('showdevice', {
 				user: currentuser,
 				device: doc,
