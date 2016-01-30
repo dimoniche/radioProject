@@ -75,11 +75,31 @@ s.on('request', function(request, response) {
  function prepare_response(data)
  {
      // сначала разберем что приняли
-     var new_device = JSON.parse(data);
+     var new_device;
+     
+     try
+     {
+         new_device = JSON.parse(data);
+     }
+     catch(e)
+     {
+         console.log('Неверный запрос');
+         return;
+     }
+     
      var collection = db.get('devices');
  
      var new_answer = new Array();
-     new_answer = JSON.parse(new_device.Answer);
+     
+     try
+     {
+         new_answer = JSON.parse(new_device.Answer);
+     }
+     catch(e)
+     {
+          console.log('Неверный запрос answer')
+          return;
+     }
 
      var i = 0;
 
