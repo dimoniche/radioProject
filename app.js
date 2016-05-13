@@ -2,12 +2,13 @@ var config = require("nconf");
 var express = require('express');
 var http = require('http');
 var net  = require('net');
+var iconv = require("iconv");
 var app = express();
 
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = monk('localhost:27017/radio');
-//var db = monk('dimoniche:lbvsx@ds045664.mongolab.com:45664/devices');
+//var db = monk('localhost:27017/radio');
+var db = monk('dimoniche:lbvsx@ds045664.mongolab.com:45664/devices');
 
 config.argv()
     .env()
@@ -38,6 +39,7 @@ http.createServer(app).listen(app.get('port'), function () {
  // запустим ожидание
  
 var s = http.createServer();
+var error;
 
 s.on('request', function(request, response) {
     response.writeHead(200);
@@ -47,12 +49,20 @@ s.on('request', function(request, response) {
  
     var data = '';
     request.on('data', function(chunk) {
-        data += chunk.toString();
+        //converter = new iconv.Iconv("UTF-8","windows-1251//IGNORE");
+        //data = converter.convert(chunk).toString();
+        
+        data += chunk.toString('utf-8');
     });
     request.on('end', function() {
         console.log(data);
         
-        prepare_response(data);
+        try {
+          prepare_response(data);   
+        } catch (error) {
+          console.log('Неверный запрос');
+          response.writeHead(403);
+        }
 
         response.write('hi');
         response.end();
@@ -63,6 +73,7 @@ s.on('request', function(request, response) {
   s.listen(port_device, function() {
       console.log('server bound');
   }); 
+ 
  
  // запрос от прибора вида:
  //
@@ -76,7 +87,7 @@ s.on('request', function(request, response) {
  {
      // сначала разберем что приняли
      var new_device;
-     
+     error = 0;
      try
      {
          new_device = JSON.parse(data);
@@ -84,22 +95,22 @@ s.on('request', function(request, response) {
      catch(e)
      {
          console.log('Неверный запрос');
-         return;
+         throw (e);
      }
      
      var collection = db.get('devices');
  
      var new_answer = new Array();
-     
-     try
-     {
-         new_answer = JSON.parse(new_device.Answer);
-     }
-     catch(e)
-     {
-          console.log('Неверный запрос answer')
-          return;
-     }
+     new_answer = new_device.Answer;
+    //  try
+    //  {
+    //      new_answer = JSON.parse(new_device.Answer);
+    //  }
+    //  catch(e)
+    //  {
+    //       console.log('Неверный запрос answer')
+    //       return;
+    //  }
 
      var i = 0;
 
@@ -122,7 +133,7 @@ s.on('request', function(request, response) {
          'subnet': new_device.subnet,
          'answer': answer,
      }
- 
+            
       collection.findOne({ 'deviceId': newDevice.deviceId }).on('success', function (doc) {
           
           if(doc == undefined)
