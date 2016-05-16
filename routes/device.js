@@ -35,13 +35,13 @@ module.exports = function (app) {
 		// здесь добавление одного большого и одного маленького устройства
 
 		var answer = new Array();
-		answer[answer.length] = {'id': answer.length,'name': "БМС1", 'state': 'on', 'ch1':'ok', 'ch2':'ok', 'ch3':'ok'};	// маленькое устройство
+		answer[answer.length] = {'id': answer.length + 1,'name': "БМС1", 'state': 'on', 'ch1':'ok', 'ch2':'ok', 'ch3':'ok'};	// маленькое устройство
 
 		// большое устройство
         var newDevice = {
 			'deviceId': answer.length,
-            'description': "Ретранслятор",
-			'lastAccessTime': new Date(),
+            'description': "БИП",
+			'lastAccessTime': new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''),
             'ch1':'ok',
             'ch2':'ok',
             'ch3':'ok',
@@ -75,14 +75,24 @@ module.exports = function (app) {
 			// узнаем что было
 			answer = doc.answer;
 	
-            answer[answer.length] = {'id': answer.length,'name': "БМС" + (answer.length + 1), 'state': 'on', 'ch1':'ok', 'ch2':'ok', 'ch3':'ok'};    // добавим маленькое устройство
+			var id_tmp;
+			if(answer.length == 0)
+			{
+				id_tmp = 0;
+			}
+			else
+			{
+				id_tmp = answer[answer.length-1].id;
+			}
+
+            answer[answer.length] = {'id': id_tmp + 1,'name': "БМС" + (id_tmp + 1), 'state': 'on', 'ch1':'ok', 'ch2':'ok', 'ch3':'ok'};    // добавим маленькое устройство
 
 			collection.findAndModify(
 			{
 				"query": { "_id": id },
 				"update": { "$set": { 
 					"answer": answer,
-					'lastAccessTime': new Date(),
+					"lastAccessTime": new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''),
 				}},
 				"options": { "new": true, "upsert": true }
 			},
@@ -123,18 +133,29 @@ module.exports = function (app) {
 			
 			var val = parseInt(arr[1]);
 			
-			answer.splice(val,1);
-			
-			answer.forEach(function(item, i, arr) {
-  				item.id = i;
-			});
+			for(var i = 0; i <  answer.length; i++)
+			{
+				if(answer[i].id == val)
+				{
+					val = i;
+					break;
+				}
+			} 
+
+			var end_array = answer.splice(val + 1);
+			answer = answer.splice(0,val);
+
+			for(var i = 0; i <  end_array.length; i++)
+			{
+				answer[val + i] = end_array[i];
+			}
 
 			collection.findAndModify(
 			{
 				"query": { "_id": arr[0] },
 				"update": { "$set": { 
 					"answer": answer,
-					'lastAccessTime': new Date(),
+					"lastAccessTime": new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''),
 				}},
 				"options": { "new": true, "upsert": true }
 			},
@@ -173,7 +194,7 @@ module.exports = function (app) {
 				"query": { "_id": arr[0] },
 				"update": { "$set": { 
 					"answer": answer,
-					'lastAccessTime': new Date(),
+					"lastAccessTime": new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''),
 				}},
 				"options": { "new": true, "upsert": true }
 			},
@@ -220,6 +241,23 @@ module.exports = function (app) {
 			});
 		});
 	});
+
+	app.get('/gosaveBMS/:id', function(req, res) {
+		
+		var db = req.db;
+		var collection = db.get('devices');
+		var deviceToShow = req.params.id;
+		var currentuser = req.user;
+
+		collection.findOne({ '_id': deviceToShow }).on('success', function (doc) {
+			
+			res.render('saveBMS', {
+				user: currentuser,
+				device: doc,
+				error: req.flash('error')
+			});
+		});
+	});
 	
 	app.post('/renameDesc/:id', function(req, res) {
 		
@@ -233,7 +271,7 @@ module.exports = function (app) {
 			"query": { "_id": deviceToShow },
 			"update": { "$set": { 
 				"description": name,
-				'lastAccessTime': new Date(),
+				"lastAccessTime": new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''),
 			}},
 			"options": { "new": true, "upsert": true }
 		},
@@ -244,5 +282,14 @@ module.exports = function (app) {
 			
 			res.redirect('/');
 		});
+	});
+	
+	app.post('/renameBMS/:id', function(req, res) {
+		
+		var db = req.db;
+		var collection = db.get('devices');
+		var deviceToShow = req.params.id;
+        var name = req.body.name;
+
 	});
 };

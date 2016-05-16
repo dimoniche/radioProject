@@ -7,8 +7,8 @@ var app = express();
 
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = monk('localhost:27017/radio');
-//var db = monk('dimoniche:lbvsx@ds045664.mongolab.com:45664/devices');
+//var db = monk('localhost:27017/radio');
+var db = monk('dimoniche:lbvsx@ds045664.mongolab.com:45664/devices');
 
 config.argv()
     .env()
@@ -120,13 +120,13 @@ s.on('request', function(request, response) {
          answer[i] = {'id': new_answer[i].id,'name': new_answer[i].name, 'state': new_answer[i].state, 'ch1':new_answer[i].ch1, 'ch2':new_answer[i].ch2, 'ch3':new_answer[i].ch3};
          i++;
      }, this);
-
+     
      // большое устройство - сформируем объект
      var newDevice = {
          'deviceId': new_device.DeviceId,
          'device': new_device.Device,
-         'description': "Ретранслятор",
-         'lastAccessTime': new Date(),
+         'description': "БИП",
+         'lastAccessTime': new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''),
          'ch1': new_device.ch1,
          'ch2': new_device.ch2,
          'ch3': new_device.ch3,
@@ -154,7 +154,7 @@ s.on('request', function(request, response) {
                     "update": { "$set": { 
                         "device": newDevice.device,
                         "answer": newDevice.answer,
-                        'lastAccessTime': new Date(),
+                        'lastAccessTime': new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''),
                     }},
                     "options": { "new": true, "upsert": true }
                 });
@@ -162,5 +162,4 @@ s.on('request', function(request, response) {
                 console.log('Устройство обновлено');
           }
       });
-
  }

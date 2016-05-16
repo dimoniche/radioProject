@@ -33,7 +33,7 @@ block content
 
           if(user.login == "admin")
             //здесь будет добавление новых устройств 
-            h1 Ретрансляторы
+            h1 БИП
             form(action="/add-device" method="get")
               button(type="submit") Добавить новое устройство
               //#wrapper
@@ -53,7 +53,7 @@ block content
           else  
               // это отображение текущих устройств 
               //#wrapper
-              h1 Ретрансляторы
+              h1 БИП
               div(class="clear")
                 #deviceListView
                     table

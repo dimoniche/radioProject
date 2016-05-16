@@ -19,11 +19,15 @@ $(document).ready(function() {
     $('#smalldeviceListEdit table tbody').on('click', 'td a.linkdeletesmalldevice', deletesmallDevice);    
     // обновление состояния
     $('#smalldeviceListEdit table tbody').on('click', 'td a.linkupdatestate', updateState);
-
-     $('#userListEdit table tbody').on('click', 'td a.linkdeleteuser', deleteuser);
+    // редактирование названия маленького устройства
+    $('#smalldeviceListEdit table tbody').on('click', 'td a.linksaveBMS', saveBMS);
+    
+    // удаление пользователя
+    $('#userListEdit table tbody').on('click', 'td a.linkdeleteuser', deleteuser);
     
     // кнопка сохранения названия девайса
     $('#saveDeviceName').on('click', renameDesc);
+    $('#saveBMSName').on('click', renameBMS);
     
     $('#btnAddUser').on('click', addUser);
     
@@ -79,6 +83,20 @@ function renameDesc() {
             type: 'POST',
             data: namedesc,
             url: '/renameDesc/' + $(this).attr('rel'),
+            dataType: 'text'
+        }).done(function( response ) {
+            window.location = "/";
+        });
+}
+
+function renameBMS() {
+    
+    var namedesc = {name: $('#renameBMS fieldset input#inputDeviceName').val()};
+
+        $.ajax({
+            type: 'POST',
+            data: namedesc,
+            url: '/renameBMS/' + $(this).attr('rel'),
             dataType: 'text'
         }).done(function( response ) {
             window.location = "/";
@@ -161,8 +179,8 @@ function populateTable() {
                 tableContent += '<td>' + this.id + '</td>';
                 //tableContent += '<td><a href="#" class="linkshowsmalldevice" rel="' + this._id + '">'+ this.name +'</a></td>';
                 // ссылок редактирование пока нет
-                tableContent += '<td>' + this.name + '</td>';
-                //tableContent += '<td><a href="#" class="linkupdatestate" rel="' + id + '>' + this.id +'">' + state + '</a></td>';
+                //tableContent += '<td>' + this.name + '</td>';
+                tableContent += '<td><a href="#" class="linksaveBMS" rel="' + this._id + '">'+ this.name +'</a></td>';
                 // менять состояние пока не будем
                 tableContent += '<td>' + state + '</td>';
                 tableContent += '<td>' + ch1 + '</td>';
@@ -207,8 +225,8 @@ function populateTable() {
                 tableContent += '<td>' + this.id + '</td>';
                 //tableContent += '<td><a href="#" class="linkshowsmalldevice" rel="' + this._id + '">'+ this.name +'</a></td>';
                 // ссылок редактирование пока нет
+                //tableContent += '<td><a href="#" class="linksaveBMS" rel="' + this._id + '">'+ this.name +'</a></td>';
                 tableContent += '<td>' + this.name + '</td>';
-                //tableContent += '<td><a href="#" class="linkupdatestate" rel="' + id + '>' + this.id +'">' + state + '</a></td>';
                 // менять состояние пока не будем
                 tableContent += '<td>' + state + '</td>';
                 tableContent += '<td>' + ch1 + '</td>';
@@ -325,6 +343,11 @@ function populateTable() {
 function savedesc()
 {
     window.location = "/gosaveDesc/" +  $(this).attr('rel');
+}
+
+function saveBMS()
+{
+    window.location = "/gosaveBMS/" +  $(this).attr('rel');
 }
 
 function showdevice() {
