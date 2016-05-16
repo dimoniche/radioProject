@@ -246,14 +246,28 @@ module.exports = function (app) {
 		
 		var db = req.db;
 		var collection = db.get('devices');
-		var deviceToShow = req.params.id;
+		var deviceRename = req.params.id;
 		var currentuser = req.user;
 
-		collection.findOne({ '_id': deviceToShow }).on('success', function (doc) {
+		var arr = deviceRename.split(">");
+		
+		collection.findOne({ '_id': arr[0] }).on('success', function (doc) {	
+			Answer = doc.answer;
+			var index = 0;
+			
+			for(var i = 0; i < Answer.length; i++)
+			{
+				if(Answer[i].id == arr[1])
+				{
+					index = i;
+					break;
+				}
+			}
 			
 			res.render('saveBMS', {
 				user: currentuser,
 				device: doc,
+				index: index,
 				error: req.flash('error')
 			});
 		});
@@ -265,7 +279,7 @@ module.exports = function (app) {
 		var collection = db.get('devices');
 		var deviceToShow = req.params.id;
         var name = req.body.name;
-
+		
 		collection.findAndModify(
 		{
 			"query": { "_id": deviceToShow },
@@ -290,6 +304,31 @@ module.exports = function (app) {
 		var collection = db.get('devices');
 		var deviceToShow = req.params.id;
         var name = req.body.name;
+		var currentuser = req.user;
+		
+		var arr = deviceToShow.split(">");
+		
+		var Answer;
 
+		collection.findOne({ '_id': arr[0] }).on('success', function (doc) {
+			Answer = doc.answer;
+			Answer[arr[1]].name = name;
+			
+			collection.findAndModify(
+			{
+				"query": { "_id": arr[0] },
+				"update": { "$set": { 
+					"answer": Answer,
+					"lastAccessTime": new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''),
+				}},
+				"options": { "new": true, "upsert": true }
+			},
+			function(err,doc) {
+				if (err) throw err;
+				
+				console.log( doc );
+				res.redirect("/show-device/" + arr[0]);
+			});
+		});
 	});
 };

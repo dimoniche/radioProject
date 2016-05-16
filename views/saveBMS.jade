@@ -3,11 +3,11 @@ extends layout
 block content
  h1= title
   div(class="demo")
-    a(class="permalink", href="/") ← назад
+    a(class="permalink", href="/show-device/" + device._id) ← назад
     p
-    h1 Редактирование описания устройства
+    h1 Редактирование описания БМС
     #wrapper
       #renameBMS
         fieldset
-          input#inputBMSName(type='text', value=device.description)
-          button#saveBMSName(rel=device._id) Сохранить
+          input#inputBMSName(type='text', value=device.answer[index].name)
+          button#saveBMSName(rel=device._id + ">" + index) Сохранить

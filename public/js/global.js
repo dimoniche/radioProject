@@ -91,15 +91,17 @@ function renameDesc() {
 
 function renameBMS() {
     
-    var namedesc = {name: $('#renameBMS fieldset input#inputDeviceName').val()};
-
+    var namedesc = {name: $('#renameBMS fieldset input#inputBMSName').val()};
+    var id = $(this).attr('rel');
+    var arr = id.split(">");
+    
         $.ajax({
             type: 'POST',
             data: namedesc,
             url: '/renameBMS/' + $(this).attr('rel'),
             dataType: 'text'
         }).done(function( response ) {
-            window.location = "/";
+            window.location = '/show-device/' + arr[0];
         });
 }
 
@@ -180,7 +182,7 @@ function populateTable() {
                 //tableContent += '<td><a href="#" class="linkshowsmalldevice" rel="' + this._id + '">'+ this.name +'</a></td>';
                 // ссылок редактирование пока нет
                 //tableContent += '<td>' + this.name + '</td>';
-                tableContent += '<td><a href="#" class="linksaveBMS" rel="' + this._id + '">'+ this.name +'</a></td>';
+                tableContent += '<td><a href="#" class="linksaveBMS" rel="' + id + '>' + this.id +'">'+ this.name +'</a></td>';
                 // менять состояние пока не будем
                 tableContent += '<td>' + state + '</td>';
                 tableContent += '<td>' + ch1 + '</td>';
