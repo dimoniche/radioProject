@@ -7,8 +7,8 @@ var app = express();
 
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = monk('localhost:27017/radio');
-//var db = monk('dimoniche:lbvsx@ds045664.mongolab.com:45664/devices');
+//var db = monk('localhost:27017/radio');
+var db = monk('dimoniche:lbvsx@ds045664.mongolab.com:45664/devices');
 
 config.argv()
     .env()
@@ -102,15 +102,6 @@ s.on('request', function(request, response) {
  
      var new_answer = new Array();
      new_answer = new_device.Answer;
-    //  try
-    //  {
-    //      new_answer = JSON.parse(new_device.Answer);
-    //  }
-    //  catch(e)
-    //  {
-    //       console.log('Неверный запрос answer')
-    //       return;
-    //  }
 
      var i = 0;
 
@@ -121,6 +112,12 @@ s.on('request', function(request, response) {
          i++;
      }, this);
      
+     if(new_device.DeviceId == undefined 
+     || new_device.Device == undefined)
+     {
+         throw(new Error('Bad request'));
+     }
+
      // большое устройство - сформируем объект
      var newDevice = {
          'deviceId': new_device.DeviceId,
