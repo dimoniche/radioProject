@@ -83,17 +83,13 @@ s.on('request', function(request, response) {
  //
  //
  // разбор пришедшего запроса от прибора
- function prepare_response(data)
- {
+ function prepare_response(data) {
      // сначала разберем что приняли
      var new_device;
      error = 0;
-     try
-     {
+     try {
          new_device = JSON.parse(data);
-     }
-     catch(e)
-     {
+     } catch(e) {
          console.log('Неверный запрос');
          throw (e);
      }
@@ -103,45 +99,50 @@ s.on('request', function(request, response) {
      var new_answer = new Array();
      new_answer = new_device.Answer;
 
-     var i = 0;
-
      var answer = new Array();
 
-     new_answer.forEach(function(element) {
-         answer[i] = {'id': new_answer[i].id,'name': new_answer[i].name, 'state': new_answer[i].state, 'ch1':new_answer[i].ch1, 'ch2':new_answer[i].ch2, 'ch3':new_answer[i].ch3};
-         i++;
-     }, this);
-     
      if(new_device.DeviceId == undefined 
-     || new_device.Device == undefined)
-     {
+     || new_device.Device == undefined) {
          throw(new Error('Bad request'));
      }
 
-     // большое устройство - сформируем объект
-     var newDevice = {
-         'deviceId': new_device.DeviceId,
-         'device': new_device.Device,
-         'description': "БИП",
-         'lastAccessTime': new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''),
-         'ch1': new_device.ch1,
-         'ch2': new_device.ch2,
-         'ch3': new_device.ch3,
-         'subnet': new_device.subnet,
-         'answer': answer,
-     }
-            
-      collection.findOne({ 'deviceId': newDevice.deviceId }).on('success', function (doc) {
-          
-          if(doc == undefined)
-          {
+     collection.findOne({ 'deviceId': new_device.DeviceId }).on('success', function (doc) {
+        
+        if(new_answer != undefined) {
+            answer = doc.answer;
+
+            for(var i = 0; i < new_answer.length; i++) {
+                if(answer[i] == undefined) {
+                    answer[i] = {'id': new_answer[i].id,'name': new_answer[i].name, 'state': new_answer[i].state, 'ch1':new_answer[i].ch1, 'ch2':new_answer[i].ch2, 'ch3':new_answer[i].ch3};
+                } else {
+                    answer[i].id = new_answer[i].id;
+                    answer[i].state = new_answer[i].state;
+                    answer[i].ch1 = new_answer[i].ch1;
+                    answer[i].ch2 = new_answer[i].ch2;
+                    answer[i].ch3 = new_answer[i].ch3;
+                }
+            }
+        }
+
+        // большое устройство - сформируем объект
+        var newDevice = {
+            'deviceId': new_device.DeviceId,
+            'device': new_device.Device,
+            'description': "БИП",
+            'lastAccessTime': new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''),
+            'ch1': new_device.ch1,
+            'ch2': new_device.ch2,
+            'ch3': new_device.ch3,
+            'subnet': new_device.subnet,
+            'answer': answer,
+        };
+
+        if(doc == undefined) {
                 // заносим в базу запись об новом устройстве
                 collection.insert(newDevice, function(err, result){
                     console.log('Устройство добавлено');
                 });
-          }
-          else
-          {
+        } else {
             console.log('Устройство найдено');
     
             // нашли уже такой - обновим статусы
@@ -157,6 +158,6 @@ s.on('request', function(request, response) {
                 });
                 
                 console.log('Устройство обновлено');
-          }
-      });
+        }
+    });
  }
