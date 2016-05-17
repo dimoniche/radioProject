@@ -108,7 +108,12 @@ s.on('request', function(request, response) {
 
      collection.findOne({ 'deviceId': new_device.DeviceId }).on('success', function (doc) {
         
-        if(new_answer != undefined) {
+        if(doc == undefined) {
+            // нет записи
+            for(var i = 0; i < new_answer.length; i++) {
+                answer[i] = {'id': new_answer[i].id,'name': new_answer[i].name, 'state': new_answer[i].state, 'ch1':new_answer[i].ch1, 'ch2':new_answer[i].ch2, 'ch3':new_answer[i].ch3};
+            }
+        } else if(new_answer != undefined) {
             answer = doc.answer;
 
             for(var i = 0; i < new_answer.length; i++) {
@@ -128,7 +133,7 @@ s.on('request', function(request, response) {
         var newDevice = {
             'deviceId': new_device.DeviceId,
             'device': new_device.Device,
-            'description': "БИП",
+            'description': "БИП" + new_device.DeviceId,
             'lastAccessTime': new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''),
             'ch1': new_device.ch1,
             'ch2': new_device.ch2,
@@ -138,10 +143,10 @@ s.on('request', function(request, response) {
         };
 
         if(doc == undefined) {
-                // заносим в базу запись об новом устройстве
-                collection.insert(newDevice, function(err, result){
-                    console.log('Устройство добавлено');
-                });
+            // заносим в базу запись об новом устройстве
+            collection.insert(newDevice, function(err, result){
+                console.log('Устройство добавлено');
+            });
         } else {
             console.log('Устройство найдено');
     
